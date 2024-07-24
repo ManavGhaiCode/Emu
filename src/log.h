@@ -7,7 +7,7 @@
 #include <sstream>
 #include <iostream>
 
-namespace Fuel {
+namespace emu {
     typedef enum {
         LOG_FATAL,
         LOG_ERROR,
@@ -108,34 +108,34 @@ namespace Fuel {
 #endif
 
 #ifndef RELEASE
-    #define TRACE(...) Fuel::Log(Fuel::LOG_TRACE, __VA_ARGS__)
-    #define DEBUG(...) Fuel::Log(Fuel::LOG_DEBUG, __VA_ARGS__)
-    #define INFO(...)  Fuel::Log(Fuel::LOG_INFO, __VA_ARGS__)
-    #define WARN(...)  Fuel::Log(Fuel::LOG_WARN, __VA_ARGS__)
+    #define EMU_TRACE(...) emu::Log(emu::LOG_TRACE, __VA_ARGS__)
+    #define EMU_DEBUG(...) emu::Log(emu::LOG_DEBUG, __VA_ARGS__)
+    #define EMU_INFO(...)  emu::Log(emu::LOG_INFO, __VA_ARGS__)
+    #define EMU_WARN(...)  emu::Log(emu::LOG_WARN, __VA_ARGS__)
 
     #if USE_ASSERTS
-        #define ASSERT_DEBUG(exp) if (exp) {} else { Fuel::ReportAssert(#exp, "", __LINE__, __FILE__); }
+        #define ASSERT_DEBUG(exp) if (exp) {} else { emu::ReportAssert(#exp, "", __LINE__, __FILE__); }
         #define STATIC_ASSERT(exp) static_assert(exp)
     #else
         #define ASSERT_DEBUG(exp) 
         #define STATIC_ASSERT(exp) 
     #endif
 #else
-    #define TRACE 
-    #define DEBUG 
-    #define INFO 
-    #define WARN
+    #define EMU_TRACE 
+    #define EMU_DEBUG 
+    #define EMU_INFO 
+    #define EMU_WARN
 #endif
 
 #if USE_ASSERTS
-    #define ASSERT(exp) if (exp) {} else { Fuel::ReportAssert(#exp, "", __LINE__, __FILE__); }
-    #define ASSERT_MSG(exp, msg) if (exp) {} else { Fuel::ReportAssert(#exp, msg, __LINE__, __FILE__); }
+    #define ASSERT(exp) if (exp) {} else { emu::ReportAssert(#exp, "", __LINE__, __FILE__); }
+    #define ASSERT_MSG(exp, msg) if (exp) {} else { emu::ReportAssert(#exp, msg, __LINE__, __FILE__); }
 #else
     #define ASSERT(exp)
     #define ASSERT_MSG(exp, msg)
 #endif
 
-#define ERROR(...) Fuel::Log(Fuel::LOG_ERROR, __VA_ARGS__)
-#define FATAL(...) Fuel::Log(Fuel::LOG_FATAL, __VA_ARGS__)
+#define EMU_ERROR(...) emu::Log(emu::LOG_ERROR, __VA_ARGS__)
+#define EMU_FATAL(...) emu::Log(emu::LOG_FATAL, __VA_ARGS__)
 
 #endif // _LOG_H_
