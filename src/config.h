@@ -10,6 +10,9 @@ typedef unsigned short u16;
 typedef char i8;
 typedef unsigned char u8;
 
+typedef u8  Byte;
+typedef u16 Word;
+
 #ifdef __linux__
     #ifdef __x86_64
         #define LINUX
