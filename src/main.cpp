@@ -3,13 +3,16 @@
 
 #include <stdlib.h>
 
-int main ( void ) {
+int main( void ) {
     static const timespec SleepTime = {1, 0};
 
     EMU_TRACE("Init Emulator (emu)");
 
     emu::_6502 CPU;
-    CPU.Init();
+    emu::memory Mem;
+
+    CPU.BindMemory(&Mem);
+    CPU.Reset();
 
     while (true) {
         nanosleep(&SleepTime, 0);

@@ -2,7 +2,7 @@
 #include "log.h"
 
 namespace emu {
-    void _6502::Init() {
+    void _6502::Reset() {
         A = 0x0;
         X = 0x0;
         Y = 0x0;

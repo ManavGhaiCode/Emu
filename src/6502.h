@@ -1,10 +1,22 @@
+#ifndef _6502_H_
+#define _6502_H_
+
 #include "config.h"
+#include "memory.h"
 
 namespace emu {
     class _6502 {
         public:
+            _6502()
+             : m_Mem (nullptr)
+            {};
+
             void Clock();
-            void Init();
+            void Reset();
+
+            void BindMemory(memory* mem) {
+                m_Mem = mem;
+            }
 
             typedef enum {
                 /*
@@ -56,6 +68,14 @@ namespace emu {
             Word PC;
             Byte SP;
 
+            memory* m_Mem;
+            Byte m_Cache[10];
+
+            Byte m_CachePtr;
+            bool m_Next;
+
             void Run();
     };
 }
+
+#endif // _6502_H_
