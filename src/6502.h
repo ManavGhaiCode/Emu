@@ -8,7 +8,8 @@ namespace emu {
     class _6502 {
         public:
             _6502()
-             : m_Mem (nullptr)
+                : m_Mem (nullptr)
+                , m_Next (false)
             {};
 
             void Clock();
@@ -43,8 +44,8 @@ namespace emu {
 
         private:
             typedef enum {
-                MI_NONE = 0,
-                MI_END
+                MI_NOP = 0,
+                MI_END = 1
             } MicroInst;
 
             typedef enum {
@@ -56,7 +57,7 @@ namespace emu {
                 V = 0x20,
             } StatsMask;
 
-            MicroInst m_Inst[10] = { MI_NONE };
+            MicroInst m_Inst[10] = { MI_NOP };
             u8 m_InstPtr = 0;
 
             Byte m_Status;
@@ -69,7 +70,7 @@ namespace emu {
             Byte SP;
 
             memory* m_Mem;
-            Byte m_Cache[10];
+            Byte m_Cache[10] = {0};
 
             Byte m_CachePtr;
             bool m_Next;
