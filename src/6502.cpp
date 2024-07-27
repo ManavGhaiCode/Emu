@@ -1,6 +1,8 @@
 #include "6502.h"
 #include "log.h"
 
+#include <unordered_map>
+
 #define MI_P_NOP() EMU_DEBUG("Running MI: NOP")
 #define MI_P_END() EMU_DEBUG("Running MI: END")
 
@@ -15,19 +17,39 @@ namespace emu {
         PC = 0xFFFE;
         SP = 0x0;
 
-        m_Inst[0] = MI_NOP;
+        (*m_Mem)[PC] = 0xEA;
         m_Inst[9] = MI_END;
     }
 
+    Byte _6502::ReadByte() {
+        Byte ret = (*m_Mem)[PC];
+        PC += 1;
+
+        return ret;
+    }
+
+    void _6502::ReadNextI() {
+        Inst I = (Inst)ReadByte();
+
+        switch (I) {
+            case I_NOP: return;
+            default: ASSERT(false && "Unreachable");
+        }
+    }
+
     void _6502::Clock() {
-        // if (m_Next) {
-        //     m_InstPtr = 0;
-        //     m_CachePtr = 0;
+        if (m_Next) {
+            m_InstPtr = 1;
+            m_CachePtr = 0;
 
-        //     m_Inst[0] = MI_NOP;
+            m_Inst[0] = MI_NOP;
+            ReadNextI();
 
-        //     m_Next = false;
-        // }
+            m_Inst[m_InstPtr] = MI_END;
+            m_Next = false;
+
+            m_InstPtr = 0;
+        }
 
         Run();
         m_InstPtr += 1;

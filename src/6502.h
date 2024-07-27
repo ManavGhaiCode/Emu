@@ -32,6 +32,8 @@ namespace emu {
                     (indirect),Y  LDA (oper),Y  B1    2       5*
                 */
 
+                I_NOP = 0xEA,
+
                 I_LDA_IM    = 0xA9,
                 I_LDA_ZP    = 0xA5,
                 I_LDA_ZP_X  = 0xB5,
@@ -76,6 +78,9 @@ namespace emu {
             bool m_Next;
 
             void Run();
+
+            void ReadNextI();
+            Byte ReadByte();
     };
 }
 
