@@ -18,6 +18,7 @@ int main( void ) {
         // nanosleep(&SleepTime, 0);
         CPU.Clock();
         CPU.Clock();
+        CPU.Clock();
     // }
 
     CPU.GetState();

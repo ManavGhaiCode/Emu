@@ -27,13 +27,21 @@ namespace emu {
         PC = 0xFFFC;
         SP = 0x0;
 
-        (*m_Mem)[PC]     = I_LDA_IM;
+        (*m_Mem)[PC]     = I_LDA_ZP;
         (*m_Mem)[PC + 1] = 0x10;
+        (*m_Mem)[0x10]   = 0xFF;
         m_Inst[9] = MI_END;
     }
 
     Byte _6502::ReadByte() {
         Byte ret = (*m_Mem)[PC];
+        PC += 1;
+
+        return ret;
+    }
+
+    Byte _6502::ReadByte(Byte addr) {
+        Byte ret = (*m_Mem)[addr];
         PC += 1;
 
         return ret;
@@ -49,6 +57,14 @@ namespace emu {
                 m_Inst[1] = MI_WRITE_A;
 
                 m_InstPtr = 2;
+            } break;
+
+            case I_LDA_ZP: {
+                m_Inst[0] = MI_READ_BYTE;
+                m_Inst[1] = MI_READ_BYTE_FC;
+                m_Inst[2] = MI_WRITE_A;
+
+                m_InstPtr = 3;
             } break;
 
             default: ASSERT(false && "Unreachable");
@@ -94,6 +110,11 @@ namespace emu {
         switch (MicInst) {
             case MI_READ_BYTE: {
                 m_Cache[m_CachePtr] = ReadByte();
+                m_CachePtr += 1;
+            } break;
+
+            case MI_READ_BYTE_FC: {
+                m_Cache[m_CachePtr] = ReadByte(m_Cache[m_CachePtr - 1]);
                 m_CachePtr += 1;
             } break;
 

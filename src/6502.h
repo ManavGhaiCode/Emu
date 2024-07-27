@@ -51,6 +51,7 @@ namespace emu {
                 MI_NOP = 0,
 
                 MI_READ_BYTE,
+                MI_READ_BYTE_FC,
                 MI_WRITE_A,
                 
                 MI_END
@@ -87,6 +88,7 @@ namespace emu {
 
             void ReadNextI();
             Byte ReadByte();
+            Byte ReadByte(Byte addr);
 
             void RunMI(MicroInst MicInst);
     };
