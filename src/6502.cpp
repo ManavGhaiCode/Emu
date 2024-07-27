@@ -7,6 +7,16 @@
 #define MI_P_END() EMU_DEBUG("Running MI: END")
 
 namespace emu {
+    void _6502::GetState() {
+        EMU_TRACE("GetState():\n\tA:  {}\n\tX:  {}\n\tY:  {}\n\tPC: {}\n\tSP: {}",
+            (u32)A,
+            (u32)X,
+            (u32)Y,
+            (u32)PC,
+            (u32)SP
+        );
+    }
+
     void _6502::Reset() {
         A = 0x0;
         X = 0x0;
@@ -14,10 +24,11 @@ namespace emu {
 
         m_Status = 0x0;
 
-        PC = 0xFFFE;
+        PC = 0xFFFC;
         SP = 0x0;
 
-        (*m_Mem)[PC] = 0xEA;
+        (*m_Mem)[PC]     = I_LDA_IM;
+        (*m_Mem)[PC + 1] = 0x10;
         m_Inst[9] = MI_END;
     }
 
@@ -33,6 +44,13 @@ namespace emu {
 
         switch (I) {
             case I_NOP: return;
+            case I_LDA_IM: {
+                m_Inst[0] = MI_READ_BYTE;
+                m_Inst[1] = MI_WRITE_A;
+
+                m_InstPtr = 2;
+            } break;
+
             default: ASSERT(false && "Unreachable");
         }
     }
@@ -67,6 +85,24 @@ namespace emu {
         if (MicInst == MI_END) { MI_P_END(); m_Next = true; return; }
         if (MicInst == MI_NOP) { MI_P_NOP(); return; }
 
+        RunMI(MicInst);
+
         EMU_DEBUG("Running MI: {}", (u32)MicInst);
+    }
+
+    void _6502::RunMI(MicroInst MicInst) {
+        switch (MicInst) {
+            case MI_READ_BYTE: {
+                m_Cache[m_CachePtr] = ReadByte();
+                m_CachePtr += 1;
+            } break;
+
+            case MI_WRITE_A: {
+                A = m_Cache[m_CachePtr - 1];
+                m_CachePtr -= 1;
+            } break;
+
+            default: ASSERT(false && "Unreachable");
+        }
     }
 }

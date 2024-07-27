@@ -9,7 +9,7 @@ namespace emu {
         public:
             _6502()
                 : m_Mem (nullptr)
-                , m_Next (false)
+                , m_Next (true)
             {};
 
             void Clock();
@@ -44,10 +44,16 @@ namespace emu {
                 I_LDA_IND_Y = 0xB1
             } Inst;
 
+            void GetState();
+
         private:
             typedef enum {
                 MI_NOP = 0,
-                MI_END = 1
+
+                MI_READ_BYTE,
+                MI_WRITE_A,
+                
+                MI_END
             } MicroInst;
 
             typedef enum {
@@ -81,6 +87,8 @@ namespace emu {
 
             void ReadNextI();
             Byte ReadByte();
+
+            void RunMI(MicroInst MicInst);
     };
 }
 

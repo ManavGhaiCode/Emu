@@ -14,10 +14,13 @@ int main( void ) {
     CPU.BindMemory(&Mem);
     CPU.Reset();
 
-    while (true) {
-        nanosleep(&SleepTime, 0);
+    // while (true) {
+        // nanosleep(&SleepTime, 0);
         CPU.Clock();
-    }
+        CPU.Clock();
+    // }
+
+    CPU.GetState();
 
     return 0;
 }
