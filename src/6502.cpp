@@ -27,9 +27,10 @@ namespace emu {
         PC = 0x0;
         SP = 0x0;
 
-        (*m_Mem)[PC]     = I_LDA_ZPX;
+        (*m_Mem)[PC]     = I_LDA_ABS;
         (*m_Mem)[PC + 1] = 0x10;
-        (*m_Mem)[0x20]   = 0x1F;
+        (*m_Mem)[PC + 2] = 0x1F;
+        (*m_Mem)[0x1F10] = 0x21;
         m_Inst[9] = MI_END;
     }
 
@@ -40,7 +41,7 @@ namespace emu {
         return ret;
     }
 
-    Byte _6502::ReadByte(Byte addr) {
+    Byte _6502::ReadByte(Word addr) {
         Byte ret = (*m_Mem)[addr];
         PC += 1;
 
@@ -61,7 +62,7 @@ namespace emu {
 
             case I_LDA_ZP: {
                 m_Inst[0] = MI_READ_BYTE;
-                m_Inst[1] = MI_READ_BYTE_FC;
+                m_Inst[1] = MI_READ_BYTE_FCB;
                 m_Inst[2] = MI_WRITE_A;
 
                 m_InstPtr = 3;
@@ -70,6 +71,15 @@ namespace emu {
             case I_LDA_ZPX: {
                 m_Inst[0] = MI_READ_BYTE;
                 m_Inst[1] = MI_ADD_CX;
+                m_Inst[2] = MI_READ_BYTE_FCB;
+                m_Inst[3] = MI_WRITE_A;
+
+                m_InstPtr = 4;
+            } break;
+
+            case I_LDA_ABS: {
+                m_Inst[0] = MI_READ_BYTE;
+                m_Inst[1] = MI_READ_BYTE;
                 m_Inst[2] = MI_READ_BYTE_FC;
                 m_Inst[3] = MI_WRITE_A;
 
@@ -122,9 +132,16 @@ namespace emu {
                 m_CachePtr += 1;
             } break;
 
-            case MI_READ_BYTE_FC: {
+            case MI_READ_BYTE_FCB: {
                 m_Cache[m_CachePtr] = ReadByte(m_Cache[m_CachePtr - 1]);
                 m_CachePtr += 1;
+            } break;
+
+            case MI_READ_BYTE_FC: {
+                m_Cache[m_CachePtr - 2] = 
+                    ReadByte((m_Cache[m_CachePtr - 1] << 8) | (m_Cache[m_CachePtr - 2]));
+
+                m_CachePtr -= 1;
             } break;
 
             case MI_ADD_CX: {

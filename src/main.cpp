@@ -20,7 +20,7 @@ int main( void ) {
         CPU.Clock();
         CPU.Clock();
         CPU.Clock();
-        CPU.Clock();
+        // CPU.Clock();
     // }
 
     // CPU.GetState();
