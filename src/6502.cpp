@@ -19,17 +19,17 @@ namespace emu {
 
     void _6502::Reset() {
         A = 0x0;
-        X = 0x0;
+        X = 0x10;
         Y = 0x0;
 
         m_Status = 0x0;
 
-        PC = 0xFFFC;
+        PC = 0x0;
         SP = 0x0;
 
-        (*m_Mem)[PC]     = I_LDA_ZP;
+        (*m_Mem)[PC]     = I_LDA_ZPX;
         (*m_Mem)[PC + 1] = 0x10;
-        (*m_Mem)[0x10]   = 0xFF;
+        (*m_Mem)[0x20]   = 0x1F;
         m_Inst[9] = MI_END;
     }
 
@@ -65,6 +65,15 @@ namespace emu {
                 m_Inst[2] = MI_WRITE_A;
 
                 m_InstPtr = 3;
+            } break;
+
+            case I_LDA_ZPX: {
+                m_Inst[0] = MI_READ_BYTE;
+                m_Inst[1] = MI_ADD_CX;
+                m_Inst[2] = MI_READ_BYTE_FC;
+                m_Inst[3] = MI_WRITE_A;
+
+                m_InstPtr = 4;
             } break;
 
             default: ASSERT(false && "Unreachable");
@@ -116,6 +125,10 @@ namespace emu {
             case MI_READ_BYTE_FC: {
                 m_Cache[m_CachePtr] = ReadByte(m_Cache[m_CachePtr - 1]);
                 m_CachePtr += 1;
+            } break;
+
+            case MI_ADD_CX: {
+                m_Cache[m_CachePtr - 1] += X;
             } break;
 
             case MI_WRITE_A: {

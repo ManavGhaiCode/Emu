@@ -34,14 +34,14 @@ namespace emu {
 
                 I_NOP = 0xEA,
 
-                I_LDA_IM    = 0xA9,
-                I_LDA_ZP    = 0xA5,
-                I_LDA_ZP_X  = 0xB5,
-                I_LDA_ABS   = 0xAD,
-                I_LDA_ABS_X = 0xBD,
-                I_LDA_ABS_Y = 0xB9,
-                I_LDA_IND_X = 0xA1,
-                I_LDA_IND_Y = 0xB1
+                I_LDA_IM   = 0xA9,
+                I_LDA_ZP   = 0xA5,
+                I_LDA_ZPX  = 0xB5,
+                I_LDA_ABS  = 0xAD,
+                I_LDA_ABSX = 0xBD,
+                I_LDA_ABSY = 0xB9,
+                I_LDA_INDX = 0xA1,
+                I_LDA_INDY = 0xB1
             } Inst;
 
             void GetState();
@@ -56,6 +56,7 @@ namespace emu {
 
                 MI_READ_BYTE,
                 MI_READ_BYTE_FC,
+                MI_ADD_CX,
                 MI_WRITE_A,
                 
                 MI_END

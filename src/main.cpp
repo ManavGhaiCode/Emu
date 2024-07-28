@@ -19,9 +19,11 @@ int main( void ) {
         CPU.Clock();
         CPU.Clock();
         CPU.Clock();
+        CPU.Clock();
     // }
 
-    CPU.GetState();
+    // CPU.GetState();
+    EMU_DEBUG("A: {}", (u32)CPU.A);
 
     return 0;
 }
