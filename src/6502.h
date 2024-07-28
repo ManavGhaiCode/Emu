@@ -46,6 +46,10 @@ namespace emu {
 
             void GetState();
 
+            Byte A;
+            Byte X;
+            Byte Y; 
+
         private:
             typedef enum {
                 MI_NOP = 0,
@@ -70,10 +74,6 @@ namespace emu {
             u8 m_InstPtr = 0;
 
             Byte m_Status;
-
-            Byte A;
-            Byte X;
-            Byte Y; 
 
             Word PC;
             Byte SP;
