@@ -107,7 +107,7 @@ namespace emu {
 
     void _6502::Run() {
         MicroInst MicInst = m_Inst[m_InstPtr];
-        if (MicInst == MI_END) { MI_P_END(); m_Next = true; clock(); return; }
+        if (MicInst == MI_END) { MI_P_END(); m_Next = true; Clock(); return; }
         if (MicInst == MI_NOP) { MI_P_NOP(); return; }
 
         RunMI(MicInst);
