@@ -19,18 +19,17 @@ namespace emu {
 
     void _6502::Reset() {
         A = 0x0;
-        X = 0x0;
-        Y = 0x10;
+        X = 0x10;
+        Y = 0x0;
 
         m_Status = 0x0;
 
         PC = 0x0;
         SP = 0x0;
 
-        (*m_Mem)[PC]     = I_LDA_ABSY;
+        (*m_Mem)[PC]     = I_LDA_INDX;
         (*m_Mem)[PC + 1] = 0x10;
-        (*m_Mem)[PC + 2] = 0x1F;
-        (*m_Mem)[0x1F20] = 0x25;
+        (*m_Mem)[0x2120] = 0x32;
         m_Inst[9] = MI_END;
     }
 
@@ -96,7 +95,7 @@ namespace emu {
                 Word addr = ReadByte(PC + 1);
                 if (addr + X > 0xFF) {
                     m_Inst[6] = MI_NOP;
-                    m_InstPtr = 5;
+                    m_InstPtr += 1;
                 }
             } break;
 
@@ -112,8 +111,19 @@ namespace emu {
                 Word addr = ReadByte(PC + 1);
                 if (addr + Y > 0xFF) {
                     m_Inst[6] = MI_NOP;
-                    m_InstPtr = 5;
+                    m_InstPtr += 1;
                 }
+            } break;
+
+            case I_LDA_INDX: {
+                m_Inst[0] = MI_READ_BYTE;
+                m_Inst[1] = MI_ADD_CX;
+                m_Inst[2] = MI_CACHE_DUP;
+                m_Inst[3] = MI_CACHE_INC;
+                m_Inst[4] = MI_READ_BYTE_FC;
+                m_Inst[5] = MI_WRITE_A;
+
+                m_InstPtr = 6;
             } break;
 
             default: ASSERT(false && "Unreachable");
@@ -205,6 +215,15 @@ namespace emu {
             case MI_WRITE_A: {
                 A = m_Cache[m_CachePtr - 1];
                 m_CachePtr -= 1;
+            } break;
+
+            case MI_CACHE_DUP: {
+                m_Cache[m_CachePtr] = m_Cache[m_CachePtr - 1];
+                m_CachePtr += 1;
+            } break;
+
+            case MI_CACHE_INC: {
+                m_Cache[m_CachePtr - 1] += 1;
             } break;
 
             default: ASSERT(false && "Unreachable");
