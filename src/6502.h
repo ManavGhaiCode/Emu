@@ -11,7 +11,9 @@ namespace emu {
         "MI_READ_BYTE_FCB",
         "MI_READ_BYTE_FC",
         "MI_ADD_CX",
+        "MI_ADD_CY",
         "MI_ADD_CXW",
+        "MI_ADD_CYW",
         "MI_WRITE_A",
         "MI_END"
     };
@@ -69,7 +71,9 @@ namespace emu {
                 MI_READ_BYTE_FCB,
                 MI_READ_BYTE_FC,
                 MI_ADD_CX,
+                MI_ADD_CY,
                 MI_ADD_CXW,
+                MI_ADD_CYW,
                 MI_WRITE_A,
                 
                 MI_END
