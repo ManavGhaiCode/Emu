@@ -5,6 +5,17 @@
 #include "memory.h"
 
 namespace emu {
+    static const char* MI_Names[] = {
+        "MI_NOP",
+        "MI_READ_BYTE",
+        "MI_READ_BYTE_FCB",
+        "MI_READ_BYTE_FC",
+        "MI_ADD_CX",
+        "MI_ADD_CXW",
+        "MI_WRITE_A",
+        "MI_END"
+    };
+
     class _6502 {
         public:
             _6502()
@@ -58,6 +69,7 @@ namespace emu {
                 MI_READ_BYTE_FCB,
                 MI_READ_BYTE_FC,
                 MI_ADD_CX,
+                MI_ADD_CXW,
                 MI_WRITE_A,
                 
                 MI_END
