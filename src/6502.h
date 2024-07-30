@@ -7,15 +7,22 @@
 namespace emu {
     static const char* MI_Names[] = {
         "MI_NOP",
+
         "MI_READ_BYTE",
         "MI_READ_BYTE_FCB",
         "MI_READ_BYTE_FC",
+
         "MI_ADD_CX",
         "MI_ADD_CY",
         "MI_ADD_CXW",
         "MI_ADD_CYW",
+
         "MI_WRITE_A",
+        "MI_WRITE_Y",
+        "MI_WRITE_X",
+
         "MI_CACHE_DNI",
+                
         "MI_END"
     };
 
@@ -101,11 +108,15 @@ namespace emu {
                 MI_READ_BYTE,
                 MI_READ_BYTE_FCB,
                 MI_READ_BYTE_FC,
+
                 MI_ADD_CX,
                 MI_ADD_CY,
                 MI_ADD_CXW,
                 MI_ADD_CYW,
+
                 MI_WRITE_A,
+                MI_WRITE_Y,
+                MI_WRITE_X,
 
                 MI_CACHE_DNI,
                 

@@ -6,6 +6,8 @@
 #define MI_P_NOP() EMU_DEBUG("Running MI: NOP")
 #define MI_P_END() EMU_DEBUG("Running MI: END")
 
+#define WRITE_MI(MI) m_Inst[m_InstPtr] = MI; m_InstPtr += 1
+
 namespace emu {
     void _6502::GetState() {
         EMU_TRACE("GetState():\n\tA:  {}\n\tX:  {}\n\tY:  {}\n\tPC: {}\n\tSP: {}",
@@ -31,7 +33,7 @@ namespace emu {
         (*m_Mem)[PC + 1] = 0x10;
         (*m_Mem)[0x0010] = 0x10;
         (*m_Mem)[0x2120] = 0x32;
-        m_Inst[9] = MI_END;
+        WRITE_MI(MI_END);
     }
 
     Byte _6502::ReadByte() {
@@ -52,101 +54,147 @@ namespace emu {
         switch (I) {
             case I_NOP: return;
             case I_LDA_IM: {
-                m_Inst[0] = MI_READ_BYTE;
-                m_Inst[1] = MI_WRITE_A;
-
-                m_InstPtr = 2;
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_WRITE_A);
             } break;
 
             case I_LDA_ZP: {
-                m_Inst[0] = MI_READ_BYTE;
-                m_Inst[1] = MI_READ_BYTE_FCB;
-                m_Inst[2] = MI_WRITE_A;
-
-                m_InstPtr = 3;
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE_FCB);
+                WRITE_MI(MI_WRITE_A);
             } break;
 
             case I_LDA_ZPX: {
-                m_Inst[0] = MI_READ_BYTE;
-                m_Inst[1] = MI_ADD_CX;
-                m_Inst[2] = MI_READ_BYTE_FCB;
-                m_Inst[3] = MI_WRITE_A;
-
-                m_InstPtr = 4;
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CX);
+                WRITE_MI(MI_READ_BYTE_FCB);
+                WRITE_MI(MI_WRITE_A);
             } break;
 
             case I_LDA_ABS: {
-                m_Inst[0] = MI_READ_BYTE;
-                m_Inst[1] = MI_READ_BYTE;
-                m_Inst[2] = MI_READ_BYTE_FC;
-                m_Inst[3] = MI_WRITE_A;
-
-                m_InstPtr = 4;
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_WRITE_A);
             } break;
 
             case I_LDA_ABSX: {
-                m_Inst[0] = MI_READ_BYTE;
-                m_Inst[1] = MI_READ_BYTE;
-                m_Inst[2] = MI_ADD_CXW;
-                m_Inst[3] = MI_READ_BYTE_FC;
-                m_Inst[4] = MI_WRITE_A;
-
-                m_InstPtr = 5;
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CXW);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_WRITE_A);
 
                 Byte lo = ReadByte(PC + 1);
                 if (lo + X > 0xFF) {
-                    m_Inst[6] = MI_NOP;
-                    m_InstPtr += 1;
+                    WRITE_MI(MI_NOP);
                 }
             } break;
 
             case I_LDA_ABSY: {
-                m_Inst[0] = MI_READ_BYTE;
-                m_Inst[1] = MI_READ_BYTE;
-                m_Inst[2] = MI_ADD_CYW;
-                m_Inst[3] = MI_READ_BYTE_FC;
-                m_Inst[4] = MI_WRITE_A;
-
-                m_InstPtr = 5;
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CYW);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_WRITE_A);
 
                 Byte lo = ReadByte(PC + 1);
                 if (lo + Y > 0xFF) {
-                    m_Inst[5] = MI_NOP;
-                    m_InstPtr += 1;
+                    WRITE_MI(MI_NOP);
                 }
             } break;
 
             case I_LDA_INDX: {
-                m_Inst[0] = MI_READ_BYTE;
-                m_Inst[1] = MI_READ_BYTE_FCB;
-                m_Inst[2] = MI_ADD_CX;
-                m_Inst[3] = MI_CACHE_DNI;
-                m_Inst[4] = MI_READ_BYTE_FC;
-                m_Inst[5] = MI_WRITE_A;
-
-                m_InstPtr = 6;
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE_FCB);
+                WRITE_MI(MI_ADD_CX);
+                WRITE_MI(MI_CACHE_DNI);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_WRITE_A);
             } break;
 
             case I_LDA_INDY: {
                 // TODO: Implement
                 ASSERT_MSG(false, "Implement");
 
-                m_Inst[0] = MI_READ_BYTE;
-                m_Inst[0] = MI_READ_BYTE_FC;
-                m_Inst[1] = MI_CACHE_DNI;
-                m_Inst[2] = MI_ADD_CYW;
-                m_Inst[3] = MI_READ_BYTE_FC;
-                m_Inst[4] = MI_WRITE_A;
-
-                m_InstPtr = 5;
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_CACHE_DNI);
+                WRITE_MI(MI_ADD_CYW);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_WRITE_A);
 
                 Byte lo = ReadByte(PC + 1);
                 if (lo + Y > 0xFF) {
-                    m_Inst[5] = MI_NOP;
-                    m_InstPtr += 1;
+                    WRITE_MI(MI_NOP);
                 }
 
                 EMU_DEBUG("{}", lo + Y);
+            } break;
+
+            case I_LDX_IM: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_WRITE_X);
+            } break;
+
+            case I_LDX_ZP: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE_FCB);
+                WRITE_MI(MI_WRITE_X);
+            } break;
+
+            case I_LDX_ZPY: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CY);
+                WRITE_MI(MI_READ_BYTE_FCB);
+                WRITE_MI(MI_WRITE_X);
+            } break;
+
+            case I_LDX_ABS: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_WRITE_X);
+            } break;
+
+            case I_LDX_ABSY: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CYW);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_WRITE_X);
+            } break;
+
+            case I_LDY_IM: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_WRITE_Y);
+            } break;
+
+            case I_LDY_ZP: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE_FCB);
+                WRITE_MI(MI_WRITE_Y);
+            } break;
+
+            case I_LDY_ZPX: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CX);
+                WRITE_MI(MI_READ_BYTE_FCB);
+            } break;
+
+            case I_LDY_ABS: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_WRITE_Y);
+            } break;
+
+            case I_LDY_ABSX: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CXW);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_WRITE_Y);
             } break;
 
             default: ASSERT(false && "Unreachable");
@@ -158,10 +206,10 @@ namespace emu {
             m_InstPtr = 1;
             m_CachePtr = 0;
 
-            m_Inst[0] = MI_NOP;
+            WRITE_MI(MI_NOP);
             ReadNextI();
 
-            m_Inst[m_InstPtr] = MI_END;
+            WRITE_MI(MI_END);
             m_Next = false;
 
             m_InstPtr = 0;
@@ -174,7 +222,7 @@ namespace emu {
             m_InstPtr = 0;
             m_CachePtr = 0;
 
-            m_Inst[0] = MI_NOP;
+            WRITE_MI(MI_NOP);
         }
     }
 
@@ -237,6 +285,16 @@ namespace emu {
 
             case MI_WRITE_A: {
                 A = m_Cache[m_CachePtr - 1];
+                m_CachePtr -= 1;
+            } break;
+
+            case MI_WRITE_X: {
+                X = m_Cache[m_CachePtr - 1];
+                m_CachePtr -= 1;
+            } break;
+
+            case MI_WRITE_Y: {
+                Y = m_Cache[m_CachePtr - 1];
                 m_CachePtr -= 1;
             } break;
 
