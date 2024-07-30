@@ -35,7 +35,7 @@ namespace emu {
 
             typedef enum {
                 /*
-                    addressing	  assembler	    opc	  bytes	  cycles
+                    addressing    assembler     opc   bytes   cycles
                     immediate     LDA #oper     A9    2       2 
                     zeropage      LDA oper      A5    2       3 
                     zeropage,X    LDA oper,X    B5    2       4 
@@ -55,7 +55,37 @@ namespace emu {
                 I_LDA_ABSX = 0xBD,
                 I_LDA_ABSY = 0xB9,
                 I_LDA_INDX = 0xA1,
-                I_LDA_INDY = 0xB1
+                I_LDA_INDY = 0xB1,
+
+                /*
+                    addressing    assembler    opc   bytes   cycles
+                    immediate     LDX #oper    A2    2       2  
+                    zeropage      LDX oper     A6    2       3  
+                    zeropage,Y    LDX oper,Y   B6    2       4  
+                    absolute      LDX oper     AE    3       4  
+                    absolute,Y    LDX oper,Y   BE    3       4* 
+                */
+
+                I_LDX_IM   = 0xA2,
+                I_LDX_ZP   = 0xA6,
+                I_LDX_ZPY  = 0xB6,
+                I_LDX_ABS  = 0xAE,
+                I_LDX_ABSY = 0xBE,
+
+                /*
+                    addressing    assembler    opc   bytes   cycles
+                    immediate     LDY #oper    A0    2       2  
+                    zeropage      LDY oper     A4    2       3  
+                    zeropage,X    LDY oper,X   B4    2       4  
+                    absolute      LDY oper     AC    3       4  
+                    absolute,X    LDY oper,X   BC    3       4* 
+                */
+
+                I_LDY_IM   = 0xA0,
+                I_LDY_ZP   = 0xA4,
+                I_LDY_ZPX  = 0xB4,
+                I_LDY_ABS  = 0xAC,
+                I_LDY_ABSX = 0xBC,
             } Inst;
 
             void GetState();
