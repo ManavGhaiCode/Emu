@@ -15,8 +15,7 @@ namespace emu {
         "MI_ADD_CXW",
         "MI_ADD_CYW",
         "MI_WRITE_A",
-        "MI_CACHE_DUP",
-        "MI_CACHE_INC",
+        "MI_CACHE_DNI",
         "MI_END"
     };
 
@@ -78,8 +77,7 @@ namespace emu {
                 MI_ADD_CYW,
                 MI_WRITE_A,
 
-                MI_CACHE_DUP,
-                MI_CACHE_INC,
+                MI_CACHE_DNI,
                 
                 MI_END
             } MicroInst;
