@@ -111,7 +111,7 @@ namespace emu {
 
                 Byte lo = ReadByte(PC + 1);
                 if (lo + Y > 0xFF) {
-                    m_Inst[6] = MI_NOP;
+                    m_Inst[5] = MI_NOP;
                     m_InstPtr += 1;
                 }
             } break;
@@ -128,7 +128,11 @@ namespace emu {
             } break;
 
             case I_LDA_INDY: {
+                // TODO: Implement
+                ASSERT_MSG(false, "Implement");
+
                 m_Inst[0] = MI_READ_BYTE;
+                m_Inst[0] = MI_READ_BYTE_FC;
                 m_Inst[1] = MI_CACHE_DNI;
                 m_Inst[2] = MI_ADD_CYW;
                 m_Inst[3] = MI_READ_BYTE_FC;
