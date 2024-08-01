@@ -36,7 +36,7 @@ namespace emu {
         WRITE_MI(MI_END);
     }
 
-    Byte _6502::ReadByte() {
+    Byte _6502::FetchByte() {
         Byte ret = (*m_Mem)[PC];
         PC += 1;
 
@@ -48,8 +48,12 @@ namespace emu {
         return ret;
     }
 
+    void _6502::WriteByte(Word addr, Byte value) {
+        (*m_Mem)[addr] = value;
+    }
+
     void _6502::ReadNextI() {
-        Inst I = (Inst)ReadByte();
+        Inst I = (Inst)FetchByte();
 
         switch (I) {
             case I_NOP: return;
@@ -197,6 +201,100 @@ namespace emu {
                 WRITE_MI(MI_WRITE_Y);
             } break;
 
+            case I_STA_ZP: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_X);
+                WRITE_MI(MI_WRITEB);
+            } break;
+
+            case I_STA_ZPX: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CX);
+                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_WRITEB);
+            } break;
+
+            case I_STA_ABS: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_WRITE);
+            } break;
+
+            case I_STA_ABSX: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CXW);
+                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_WRITE);
+            } break;
+
+            case I_STA_ABSY: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CYW);
+                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_WRITE);
+            } break;
+
+            case I_STA_INDX: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE_FCB);
+                WRITE_MI(MI_ADD_CX);
+                WRITE_MI(MI_CACHE_DNI);
+                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_WRITE);
+            } break;
+
+            case I_STA_INDY: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_CACHE_DNI);
+                WRITE_MI(MI_ADD_CYW);
+                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_WRITE);
+            } break;
+
+            case I_STX_ZP: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_X);
+                WRITE_MI(MI_WRITEB);
+            } break;
+
+            case I_STX_ZPY: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CY);
+                WRITE_MI(MI_READ_X);
+                WRITE_MI(MI_WRITEB);
+            } break;
+
+            case I_STX_ABS: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_X);
+                WRITE_MI(MI_WRITE);
+            } break;
+
+            case I_STY_ZP: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_Y);
+                WRITE_MI(MI_WRITEB);
+            } break;
+
+            case I_STY_ZPX: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_ADD_CX);
+                WRITE_MI(MI_READ_Y);
+                WRITE_MI(MI_WRITEB);
+            } break;
+
+            case I_STY_ABS: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_Y);
+                WRITE_MI(MI_WRITE);
+            } break;
+
             default: ASSERT(false && "Unreachable");
         }
     }
@@ -239,7 +337,7 @@ namespace emu {
     void _6502::RunMI(MicroInst MicInst) {
         switch (MicInst) {
             case MI_READ_BYTE: {
-                m_Cache[m_CachePtr] = ReadByte();
+                m_Cache[m_CachePtr] = FetchByte();
                 m_CachePtr += 1;
             } break;
 
@@ -297,6 +395,35 @@ namespace emu {
                 Y = m_Cache[m_CachePtr - 1];
                 m_CachePtr -= 1;
             } break;
+
+            case MI_READ_A: {
+                m_Cache[m_CachePtr] = A;
+                m_CachePtr += 1;
+            } break;
+
+            case MI_READ_X: {
+                m_Cache[m_CachePtr] = X;
+                m_CachePtr += 1;
+            } break;
+
+            case MI_READ_Y: {
+                m_Cache[m_CachePtr] = Y;
+                m_CachePtr += 1;
+            } break;
+
+            case MI_WRITEB: {
+                Byte addr = m_Cache[m_CachePtr - 2];
+                WriteByte(addr, m_Cache[m_CachePtr - 1]);
+
+                m_CachePtr -= 2;
+            } break;
+
+            case MI_WRITE: {
+                Word addr = (m_Cache[m_CachePtr - 2] << 8) | (m_Cache[m_CachePtr - 3]);
+                WriteByte(addr, m_CachePtr - 1);
+
+                m_CachePtr -= 3;
+            }
 
             case MI_CACHE_DNI: {
                 m_Cache[m_CachePtr] = m_Cache[m_CachePtr - 1] + 1;
