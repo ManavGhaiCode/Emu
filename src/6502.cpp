@@ -295,6 +295,42 @@ namespace emu {
                 WRITE_MI(MI_WRITE);
             } break;
 
+            case I_TAX: {
+                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_WRITE_X);
+            } break;
+
+            case I_TAY: {
+                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_WRITE_Y);
+            } break;
+
+            case I_TSX: {
+                // TODO: Implement
+                ASSERT_MSG(false, "Implement");
+
+                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_WRITE_X);
+            } break;
+
+            case I_TXA: {
+                WRITE_MI(MI_READ_X);
+                WRITE_MI(MI_WRITE_A);
+            } break;
+
+            case I_TXS: {
+                // TODO: Implement
+                ASSERT_MSG(false, "Implement");
+
+                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_WRITE_X);
+            } break;
+
+            case I_TYA: {
+                WRITE_MI(MI_READ_Y);
+                WRITE_MI(MI_WRITE_A);
+            } break;
+
             default: ASSERT(false && "Unreachable");
         }
     }

@@ -138,6 +138,23 @@ namespace emu {
                 I_STY_ZP  = 0x84,
                 I_STY_ZPX = 0x94,
                 I_STY_ABS = 0x8C,
+
+                /* 
+                    addressing    assembler     opc    bytes    cycles
+                    implied       TAX           AA       1        2  
+                    implied       TAY           A8       1        2  
+                    implied       TSX           BA       1        2  
+                    implied       TXA           8A       1        2  
+                    implied       TXS           9A       1        2  
+                    implied       TYA           98       1        2  
+                */
+
+               I_TAX = 0xAA,
+               I_TAY = 0xA8,
+               I_TSX = 0xBA,
+               I_TXA = 0x8A,
+               I_TXS = 0x9A,
+               I_TYA = 0x98,
             } Inst;
 
             void GetState();
