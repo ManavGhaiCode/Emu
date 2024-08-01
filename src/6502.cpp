@@ -132,8 +132,6 @@ namespace emu {
                 if (lo + Y > 0xFF) {
                     WRITE_MI(MI_NOP);
                 }
-
-                EMU_DEBUG("{}", lo + Y);
             } break;
 
             case I_LDX_IM: {
@@ -331,6 +329,24 @@ namespace emu {
                 WRITE_MI(MI_WRITE_A);
             } break;
 
+            case I_JMP_ABS: {
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_WRITE_PC);
+            } break;
+
+            case I_JMP_IND: {
+                // TODO: Implement
+                ASSERT_MSG(false, "Implement");
+
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_CAHSE_DNIW_G2);
+                WRITE_MI(MI_READ_BYTE_FC);
+                WRITE_MI(MI_WRITE_PC);
+            } break;
+
             default: ASSERT(false && "Unreachable");
         }
     }
@@ -447,6 +463,10 @@ namespace emu {
                 m_CachePtr += 1;
             } break;
 
+            case MI_WRITE_PC: {
+                PC = (m_Cache[m_CachePtr - 1] << 8) | (m_Cache[m_CachePtr - 2]);
+            } break;
+
             case MI_WRITEB: {
                 Byte addr = m_Cache[m_CachePtr - 2];
                 WriteByte(addr, m_Cache[m_CachePtr - 1]);
@@ -464,6 +484,17 @@ namespace emu {
             case MI_CACHE_DNI: {
                 m_Cache[m_CachePtr] = m_Cache[m_CachePtr - 1] + 1;
                 m_CachePtr += 1;
+            } break;
+
+            case MI_CAHSE_DNIW_G2: {
+                m_Cache[m_CachePtr] = (m_Cache[m_CachePtr - 3] + 1);
+                m_CachePtr += 1;
+
+                m_Cache[m_CachePtr] = (m_Cache[m_CachePtr - 3] + 1);
+
+                if (m_Cache[m_CachePtr - 1] == 0) {
+                    m_Cache[m_CachePtr] += 1;
+                }
             } break;
 
             default: ASSERT(false && "Unreachable");

@@ -25,7 +25,11 @@ namespace emu {
         "MI_WRITE",
         "MI_WRITEB"
 
+        "MI_WRITE_PC",
+        "MI_READ_PC",
+
         "MI_CACHE_DNI",
+        "MI_CACHE_DNIW_G2",
 
         "MI_END"
     };
@@ -149,12 +153,21 @@ namespace emu {
                     implied       TYA           98       1        2  
                 */
 
-               I_TAX = 0xAA,
-               I_TAY = 0xA8,
-               I_TSX = 0xBA,
-               I_TXA = 0x8A,
-               I_TXS = 0x9A,
-               I_TYA = 0x98,
+                I_TAX = 0xAA,
+                I_TAY = 0xA8,
+                I_TSX = 0xBA,
+                I_TXA = 0x8A,
+                I_TXS = 0x9A,
+                I_TYA = 0x98,
+
+                /*
+                    addressing    assembler     opc    bytes    cycles
+                    absolute      JMP oper      4C       3        3 
+                    indirect      JMP (oper)    6C       3        5 
+                */
+
+                I_JMP_ABS = 0x4C,
+                I_JMP_IND = 0x6C,
             } Inst;
 
             void GetState();
@@ -183,10 +196,14 @@ namespace emu {
                 MI_READ_X,
                 MI_READ_Y,
 
+                MI_WRITE_PC,
+                MI_READ_PC,
+
                 MI_WRITE,
                 MI_WRITEB,
 
                 MI_CACHE_DNI,
+                MI_CAHSE_DNIW_G2,
 
                 MI_END
             } MicroInst;
