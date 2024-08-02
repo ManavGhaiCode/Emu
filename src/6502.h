@@ -8,9 +8,9 @@ namespace emu {
     static const char* MI_Names[] = {
         "MI_NOP",
 
+        "MI_FETCH_BYTE",
+        "MI_READ_BYTEB",
         "MI_READ_BYTE",
-        "MI_READ_BYTE_FCB",
-        "MI_READ_BYTE_FC",
 
         "MI_ADD_CX",
         "MI_ADD_CY",
@@ -182,9 +182,9 @@ namespace emu {
             typedef enum {
                 MI_NOP = 0,
 
+                MI_FETCH_BYTE,
+                MI_READ_BYTEB,
                 MI_READ_BYTE,
-                MI_READ_BYTE_FCB,
-                MI_READ_BYTE_FC,
 
                 MI_ADD_CX,
                 MI_ADD_CY,
