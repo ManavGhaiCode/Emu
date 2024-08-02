@@ -50,6 +50,7 @@ namespace emu {
 
     void _6502::WriteByte(Word addr, Byte value) {
         (*m_Mem)[addr] = value;
+        m_WritenMemory = value;
     }
 
     void _6502::ReadNextI() {
@@ -353,10 +354,10 @@ namespace emu {
 
     void _6502::Clock() {
         if (m_Next) {
-            m_InstPtr = 1;
             m_CachePtr = 0;
+            m_InstPtr = 0;
 
-            WRITE_MI(MI_NOP);
+            m_Inst[0] = MI_NOP;
             ReadNextI();
 
             WRITE_MI(MI_END);
@@ -498,6 +499,42 @@ namespace emu {
             } break;
 
             default: ASSERT(false && "Unreachable");
+        }
+    }
+
+    void _6502::WriteStatus(StatusMask mask, bool set) {
+        if (set) {
+            m_Status |= mask;
+        } else {
+            m_Status &= ~(mask);
+        }
+    }
+
+    bool _6502::ReadStatus(StatusMask mask) {
+        return m_Status & mask;
+    }
+
+    void _6502::WriteStatus() {
+        switch (m_StatusWriter) {
+            case SI_A: {
+                WriteStatus(Z, A == 0);
+                WriteStatus(N, A > 0x7F);
+            }  break;
+
+            case SI_X: {
+                WriteStatus(Z, X == 0);
+                WriteStatus(N, X > 0x7F);
+            }  break;
+
+            case SI_Y: {
+                WriteStatus(Z, Y == 0);
+                WriteStatus(N, Y > 0x7F);
+            }  break;
+
+            case SI_MEM: {
+                WriteStatus(Z, m_WritenMemory == 0);
+                WriteStatus(N, m_WritenMemory > 0x7F);
+            }  break;
         }
     }
 }

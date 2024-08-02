@@ -6,6 +6,8 @@
 
 namespace emu {
     static const char* MI_Names[] = {
+        "MI_NOP",
+
         "MI_READ_BYTE",
         "MI_READ_BYTE_FCB",
         "MI_READ_BYTE_FC",
@@ -215,7 +217,16 @@ namespace emu {
                 I = 0x08,
                 D = 0x10,
                 V = 0x20,
-            } StatsMask;
+            } StatusMask;
+
+            typedef enum {
+                SI_A,
+                SI_X,
+                SI_Y,
+                SI_MEM,
+            } StatusInst;
+
+            StatusInst m_StatusWriter;
 
             MicroInst m_Inst[10] = { MI_NOP };
             u8 m_InstPtr = 0;
@@ -224,6 +235,8 @@ namespace emu {
 
             Word PC;
             Byte SP;
+
+            Byte m_WritenMemory;
 
             memory* m_Mem;
             Byte m_Cache[10] = {0};
@@ -236,10 +249,14 @@ namespace emu {
             void ReadNextI();
             Byte FetchByte();
             Byte ReadByte(Word addr);
-
             void WriteByte(Word addr, Byte value);
 
+            void WriteStatus(StatusMask mask, bool set);
+            bool ReadStatus(StatusMask mask);
+
             void RunMI(MicroInst MicInst);
+
+            void WriteStatus();
     };
 }
 
