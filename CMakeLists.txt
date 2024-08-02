@@ -6,6 +6,8 @@ add_executable("emu"
 
     "src/main.cpp"
     "src/log.cpp"
+
+    "src/test.cpp"
 )
 
 target_include_directories("emu" PUBLIC

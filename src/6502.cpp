@@ -21,7 +21,7 @@ namespace emu {
 
     void _6502::Reset() {
         A = 0x0;
-        X = 0x10;
+        X = 0x0;
         Y = 0x0;
 
         m_Status = 0x0;
@@ -29,11 +29,7 @@ namespace emu {
         PC = 0x0;
         SP = 0x0;
 
-        (*m_Mem)[PC]     = I_LDA_INDX;
-        (*m_Mem)[PC + 1] = 0x10;
-        (*m_Mem)[0x0010] = 0x10;
-        (*m_Mem)[0x2120] = 0x32;
-        WRITE_MI(MI_END);
+        m_Next = true;
     }
 
     Byte _6502::FetchByte() {

@@ -24,14 +24,14 @@ namespace emu {
         "MI_READ_X",
         "MI_READ_Y",
 
-        "MI_WRITE",
-        "MI_WRITEB"
-
         "MI_WRITE_PC",
         "MI_READ_PC",
 
+        "MI_WRITE",
+        "MI_WRITEB",
+
         "MI_CACHE_DNI",
-        "MI_CACHE_DNIW_G2",
+        "MI_CAHSE_DNIW_G2",
 
         "MI_END"
     };
@@ -178,6 +178,8 @@ namespace emu {
             Byte X;
             Byte Y; 
 
+            Word PC;
+
         private:
             typedef enum {
                 MI_NOP = 0,
@@ -233,7 +235,6 @@ namespace emu {
 
             Byte m_Status;
 
-            Word PC;
             Byte SP;
 
             Byte m_WritenMemory;

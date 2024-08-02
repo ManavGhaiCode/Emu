@@ -15,6 +15,8 @@ namespace emu {
         LOG_INFO,
         LOG_DEBUG,
         LOG_TRACE,
+        LOG_TEST_PASS,
+        LOG_TEST_FAIL,
     } LogLevel;
 
     template<typename T>
@@ -56,6 +58,9 @@ namespace emu {
                 case LOG_WARN:  color = "\033[93m"; break;
                 case LOG_ERROR: color = "\033[91m"; break;
                 case LOG_FATAL: color = "\033[31m"; break;
+
+                case LOG_TEST_PASS: color = "\033[94m"; break;
+                case LOG_TEST_FAIL: color = "\033[91m"; break;
                 
                 default: break;
             }
@@ -71,6 +76,9 @@ namespace emu {
                 case LOG_WARN:  color = 6; break;
                 case LOG_ERROR: color = 4; break;
                 case LOG_FATAL: color = 12; break;
+
+                case LOG_TEST_PASS: color = 2; break;
+                case LOG_TEST_FAIL: color = 4; break;
                 
                 default: break;
             }
@@ -83,6 +91,9 @@ namespace emu {
             case LOG_WARN:  prefix = "[ WARN] "; break;
             case LOG_ERROR: prefix = "[ERROR] "; break;
             case LOG_FATAL: prefix = "[FATAL] "; break;
+
+            case LOG_TEST_PASS: prefix = "[PASS ] "; break;
+            case LOG_TEST_FAIL: prefix = "[FAIL ] "; break;
             
             default: break;
         }
@@ -113,6 +124,9 @@ namespace emu {
     #define EMU_INFO(...)  emu::Log(emu::LOG_INFO, __VA_ARGS__)
     #define EMU_WARN(...)  emu::Log(emu::LOG_WARN, __VA_ARGS__)
 
+    #define EMU_PASS(...)  emu::Log(emu::LOG_TEST_PASS, __VA_ARGS__)
+    #define EMU_FAIL(...)  emu::Log(emu::LOG_TEST_FAIL, __VA_ARGS__);
+
     #if USE_ASSERTS
         #define ASSERT_DEBUG(exp) if (exp) {} else { emu::ReportAssert(#exp, "", __LINE__, __FILE__); }
         #define STATIC_ASSERT(exp) static_assert(exp)
@@ -121,10 +135,13 @@ namespace emu {
         #define STATIC_ASSERT(exp) 
     #endif
 #else
-    #define EMU_TRACE 
-    #define EMU_DEBUG 
-    #define EMU_INFO 
-    #define EMU_WARN
+    #define EMU_TRACE(...) 
+    #define EMU_DEBUG(...) 
+    #define EMU_INFO(...)
+    #define EMU_WARN(...)
+
+    #define EMU_PASS(...)
+    #define EMU_FAIL(...)
 #endif
 
 #if USE_ASSERTS

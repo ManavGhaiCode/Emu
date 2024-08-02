@@ -1,6 +1,8 @@
 #include "log.h"
 #include "6502.h"
 
+#include "test.h"
+
 #include <stdlib.h>
 
 int main( void ) {
@@ -12,20 +14,22 @@ int main( void ) {
     emu::memory Mem;
 
     CPU.BindMemory(&Mem);
-    CPU.Reset();
 
-    // while (true) {
-        // nanosleep(&SleepTime, 0);
-        CPU.Clock();
-        CPU.Clock();
-        CPU.Clock();
-        CPU.Clock();
-        CPU.Clock();
-        CPU.Clock();
-    // }
+    u32 Fail = 0;
 
-    // CPU.GetState();
-    EMU_DEBUG("A: {}", (u32)CPU.A);
+    emu::__TEST_LDA_IM   (Fail, CPU, Mem);
+    emu::__TEST_LDA_ZP   (Fail, CPU, Mem);
+    emu::__TEST_LDA_ZPX  (Fail, CPU, Mem);
+    emu::__TEST_LDA_ABS  (Fail, CPU, Mem);
+    emu::__TEST_LDA_ABSX (Fail, CPU, Mem);
+    emu::__TEST_LDA_ABSY (Fail, CPU, Mem);
+    emu::__TEST_LDA_INDX (Fail, CPU, Mem);
+
+    if (!Fail) {
+        EMU_INFO("All Tests Passing");
+    } else {
+        EMU_WARN("{} Tests failing", Fail);
+    }
 
     return 0;
 }
