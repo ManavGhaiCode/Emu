@@ -179,6 +179,7 @@ namespace emu {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_ADD_CX);
                 WRITE_MI(MI_READ_BYTEB);
+                WRITE_MI(MI_WRITE_Y);
             } break;
 
             case I_LDY_ABS: {

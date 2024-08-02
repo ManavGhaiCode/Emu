@@ -281,18 +281,125 @@ namespace emu {
         bool pass = (CPU.X == 0x21);
 
         if (pass) {
-            EMU_PASS("__TEST_LDX_ABS");
+            EMU_PASS("__TEST_LDX_ABSY");
         } else {
-            EMU_FAIL("__TEST_LDX_ABS");
+            EMU_FAIL("__TEST_LDX_ABSY");
             fail += 1;
         }
     }
 
-    void __TEST_LDY_IM   (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_LDY_ZP   (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_LDY_ZPX  (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_LDY_ABS  (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_LDY_ABSX (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_LDY_IM   (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        mem[0x0000] = _6502::I_LDY_IM;
+        mem[0x0001] = 0xF0;
+
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.Y == 0xF0);
+
+        if (pass) {
+            EMU_PASS("__TEST_LDY_IM");
+        } else {
+            EMU_FAIL("__TEST_LDY_IM");
+            fail += 1;
+        }
+    }
+
+    void __TEST_LDY_ZP   (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        mem[0x0000] = _6502::I_LDY_ZP;
+        mem[0x0001] = 0xF0;
+        mem[0x00F0] = 0x50;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.Y == 0x50);
+
+        if (pass) {
+            EMU_PASS("__TEST_LDY_ZP");
+        } else {
+            EMU_FAIL("__TEST_LDY_ZP");
+            fail += 1;
+        }
+    }
+
+    void __TEST_LDY_ZPX  (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        mem[0x0000] = _6502::I_LDY_ZPX;
+        mem[0x0001] = 0x90;
+        mem[0x00A0] = 0xFF;
+
+        CPU.X = 0x10;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.Y == 0xFF);
+
+        if (pass) {
+            EMU_PASS("__TEST_LDY_ZPY");
+        } else {
+            EMU_FAIL("__TEST_LDY_ZPY");
+            fail += 1;
+        }
+    }
+
+    void __TEST_LDY_ABS  (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        mem[0x0000] = _6502::I_LDY_ABS;
+        mem[0x0001] = 0x90;
+        mem[0x0002] = 0xFF;
+        mem[0xFF90] = 0x21;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.Y == 0x21);
+
+        if (pass) {
+            EMU_PASS("__TEST_LDY_ABS");
+        } else {
+            EMU_FAIL("__TEST_LDY_ABS");
+            fail += 1;
+        }
+    }
+
+    void __TEST_LDY_ABSX (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        mem[0x0000] = _6502::I_LDY_ABSX;
+        mem[0x0001] = 0x90;
+        mem[0x0002] = 0x55;
+        mem[0x55E5] = 0x21;
+
+        CPU.X = 0x55;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.Y == 0x21);
+
+        if (pass) {
+            EMU_PASS("__TEST_LDY_ABSY");
+        } else {
+            EMU_FAIL("__TEST_LDY_ABSY");
+            fail += 1;
+        }
+    }
 
     void __TEST_STA_ZP   (u32& fail, _6502& CPU, memory& mem);
     void __TEST_STA_ZPX  (u32& fail, _6502& CPU, memory& mem);
