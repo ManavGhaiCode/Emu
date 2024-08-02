@@ -380,7 +380,7 @@ namespace emu {
 
         RunMI(MicInst);
 
-        EMU_DEBUG("Running MI: {}", emu::MI_Names[MicInst]);
+        // EMU_DEBUG("Running MI: {}", emu::MI_Names[MicInst]);
     }
 
     void _6502::RunMI(MicroInst MicInst) {

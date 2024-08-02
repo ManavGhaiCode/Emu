@@ -92,8 +92,8 @@ namespace emu {
             case LOG_ERROR: prefix = "[ERROR] "; break;
             case LOG_FATAL: prefix = "[FATAL] "; break;
 
-            case LOG_TEST_PASS: prefix = "[PASS ] "; break;
-            case LOG_TEST_FAIL: prefix = "[FAIL ] "; break;
+            case LOG_TEST_PASS: prefix = "[ PASS] "; break;
+            case LOG_TEST_FAIL: prefix = "[ FAIL] "; break;
             
             default: break;
         }

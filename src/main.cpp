@@ -17,6 +17,8 @@ int main( void ) {
 
     u32 Fail = 0;
 
+    EMU_DEBUG("Testing LDA:\n");
+
     emu::__TEST_LDA_IM   (Fail, CPU, Mem);
     emu::__TEST_LDA_ZP   (Fail, CPU, Mem);
     emu::__TEST_LDA_ZPX  (Fail, CPU, Mem);
@@ -24,6 +26,17 @@ int main( void ) {
     emu::__TEST_LDA_ABSX (Fail, CPU, Mem);
     emu::__TEST_LDA_ABSY (Fail, CPU, Mem);
     emu::__TEST_LDA_INDX (Fail, CPU, Mem);
+
+    std::cout << std::endl;
+    EMU_DEBUG("Testing LDX:\n");
+
+    emu::__TEST_LDX_IM   (Fail, CPU, Mem);
+    emu::__TEST_LDX_ZP   (Fail, CPU, Mem);
+    emu::__TEST_LDX_ZPY  (Fail, CPU, Mem);
+    emu::__TEST_LDX_ABS  (Fail, CPU, Mem);
+    emu::__TEST_LDX_ABSY (Fail, CPU, Mem);
+
+    std::cout << std::endl;
 
     if (!Fail) {
         EMU_INFO("All Tests Passing");
