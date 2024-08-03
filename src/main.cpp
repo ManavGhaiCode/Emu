@@ -57,6 +57,20 @@ int main( void ) {
     emu::__TEST_STA_INDY (Fail, CPU, Mem);
 
     std::cout << std::endl;
+    EMU_DEBUG("Testing STX:");
+
+    emu::__TEST_STX_ZP   (Fail, CPU, Mem);
+    emu::__TEST_STX_ZPY  (Fail, CPU, Mem);
+    emu::__TEST_STX_ABS  (Fail, CPU, Mem);
+
+    std::cout << std::endl;
+    EMU_DEBUG("Testing STY:");
+
+    emu::__TEST_STY_ZP   (Fail, CPU, Mem);
+    emu::__TEST_STY_ZPX  (Fail, CPU, Mem);
+    emu::__TEST_STY_ABS  (Fail, CPU, Mem);
+
+    std::cout << std::endl;
 
     if (!Fail) {
         EMU_INFO("All Tests Passing");

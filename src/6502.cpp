@@ -199,7 +199,7 @@ namespace emu {
 
             case I_STA_ZP: {
                 WRITE_MI(MI_FETCH_BYTE);
-                WRITE_MI(MI_READ_X);
+                WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_WRITEB);
             } break;
 
@@ -474,7 +474,7 @@ namespace emu {
 
             case MI_WRITE: {
                 Word addr = (m_Cache[m_CachePtr - 2] << 8) | (m_Cache[m_CachePtr - 3]);
-                WriteByte(addr, m_CachePtr - 1);
+                WriteByte(addr, m_Cache[m_CachePtr - 1]);
 
                 m_CachePtr -= 3;
             }
