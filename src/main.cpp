@@ -46,6 +46,17 @@ int main( void ) {
     emu::__TEST_LDY_ABSX (Fail, CPU, Mem);
 
     std::cout << std::endl;
+    EMU_DEBUG("Testing STA:\n");
+
+    emu::__TEST_STA_ZP   (Fail, CPU, Mem);
+    emu::__TEST_STA_ZPX  (Fail, CPU, Mem);
+    emu::__TEST_STA_ABS  (Fail, CPU, Mem);
+    emu::__TEST_STA_ABSX (Fail, CPU, Mem);
+    emu::__TEST_STA_ABSY (Fail, CPU, Mem);
+    emu::__TEST_STA_INDX (Fail, CPU, Mem);
+    emu::__TEST_STA_INDY (Fail, CPU, Mem);
+
+    std::cout << std::endl;
 
     if (!Fail) {
         EMU_INFO("All Tests Passing");

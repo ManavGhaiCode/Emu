@@ -401,13 +401,179 @@ namespace emu {
         }
     }
 
-    void __TEST_STA_ZP   (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_STA_ZPX  (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_STA_ABS  (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_STA_ABSX (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_STA_ABSY (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_STA_INDX (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_STA_INDY (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_STA_ZP   (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        CPU.A = 0x22;
+
+        mem[0x0000] = _6502::I_STA_ZP;
+        mem[0x0001] = 0x20;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x0020] = 0x22);
+
+        if (pass) {
+            EMU_PASS("__TEST_STA_ZP");
+        } else {
+            EMU_FAIL("__TEST_STA_ZP");
+            fail += 1;
+        }
+    }
+
+    void __TEST_STA_ZPX  (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        CPU.X = 0x10;
+        CPU.A = 0x22;
+
+        mem[0x0000] = _6502::I_STA_ZPX;
+        mem[0x0001] = 0x20;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x0030] = 0x22);
+
+        if (pass) {
+            EMU_PASS("__TEST_STA_ZPX");
+        } else {
+            EMU_FAIL("__TEST_STA_ZPX");
+            fail += 1;
+        }
+    }
+
+    void __TEST_STA_ABS  (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        CPU.A = 0x22;
+
+        mem[0x0000] = _6502::I_STA_ABS;
+        mem[0x0001] = 0x20;
+        mem[0x0002] = 0x30;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x3020] = 0x22);
+
+        if (pass) {
+            EMU_PASS("__TEST_STA_ABS");
+        } else {
+            EMU_FAIL("__TEST_STA_ABS");
+            fail += 1;
+        }
+    }
+
+    void __TEST_STA_ABSX (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        
+        CPU.X = 0x55;
+        CPU.A = 0x22;
+
+        mem[0x0000] = _6502::I_STA_ABSX;
+        mem[0x0001] = 0x20;
+        mem[0x0002] = 0x30;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x3075] = 0x22);
+
+        if (pass) {
+            EMU_PASS("__TEST_STA_ABSX");
+        } else {
+            EMU_FAIL("__TEST_STA_ABSX");
+            fail += 1;
+        }
+    }
+
+    void __TEST_STA_ABSY (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        
+        CPU.Y = 0x55;
+        CPU.A = 0x22;
+
+        mem[0x0000] = _6502::I_STA_ABSY;
+        mem[0x0001] = 0x20;
+        mem[0x0002] = 0x30;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x3075] = 0x22);
+
+        if (pass) {
+            EMU_PASS("__TEST_STA_ABSY");
+        } else {
+            EMU_FAIL("__TEST_STA_ABSY");
+            fail += 1;
+        }
+    }
+
+    void __TEST_STA_INDX (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        
+        CPU.X = 0x55;
+        CPU.A = 0x22;
+
+        mem[0x0000] = _6502::I_STA_INDX;
+        mem[0x0001] = 0x20;
+        mem[0x0020] = 0x60;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0xB6B5] = 0x22);
+
+        if (pass) {
+            EMU_PASS("__TEST_STA_INDX");
+        } else {
+            EMU_FAIL("__TEST_STA_INDX");
+            fail += 1;
+        }
+    }
+
+    void __TEST_STA_INDY (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        
+        CPU.X = 0x55;
+        CPU.A = 0x22;
+
+        mem[0x0000] = _6502::I_STA_INDX;
+        mem[0x0001] = 0x20;
+        mem[0x0020] = 0x60;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0xB6B5] = 0x22);
+
+        if (pass) {
+            EMU_PASS("__TEST_STA_INDY");
+        } else {
+            EMU_FAIL("__TEST_STA_INDY");
+            fail += 1;
+        }
+    }
 
     void __TEST_STX_ZP   (u32& fail, _6502& CPU, memory& mem);
     void __TEST_STX_ZPY  (u32& fail, _6502& CPU, memory& mem);
