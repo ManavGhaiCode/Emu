@@ -50,7 +50,7 @@ namespace emu {
     void __TEST_TYA      (u32& fail, _6502& CPU, memory& mem);
 
     void __TEST_JMP_ABS  (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_JMP_IND  (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_JMP_IND  (u32& fail, _6502& CPU, memory& mem); // Currently unsupported
 }
 
 #endif // _TEST_H_

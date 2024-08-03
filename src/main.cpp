@@ -73,10 +73,16 @@ int main( void ) {
     std::cout << std::endl;
     EMU_DEBUG("Testing T**:");
 
-    emu::__TEST_TAX  (Fail, CPU, Mem);
-    emu::__TEST_TAY  (Fail, CPU, Mem);
-    emu::__TEST_TXA  (Fail, CPU, Mem);
-    emu::__TEST_TYA  (Fail, CPU, Mem);
+    emu::__TEST_TAX      (Fail, CPU, Mem);
+    emu::__TEST_TAY      (Fail, CPU, Mem);
+    emu::__TEST_TXA      (Fail, CPU, Mem);
+    emu::__TEST_TYA      (Fail, CPU, Mem);
+
+    std::cout << std::endl;
+    EMU_DEBUG("Testing JMP:");
+
+    emu::__TEST_JMP_ABS  (Fail, CPU, Mem);
+    // emu::__TEST_JMP_IND  (Fail, CPU, Mem);
 
     std::cout << std::endl;
 

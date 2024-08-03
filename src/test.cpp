@@ -791,6 +791,26 @@ namespace emu {
         }
     }
 
-    void __TEST_JMP_ABS  (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_JMP_IND  (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_JMP_ABS  (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        mem[0x0000] = _6502::I_JMP_ABS;
+        mem[0x0001] = 0xFC;
+        mem[0x0002] = 0xFF;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.PC == 0xFFFC);
+
+        if (pass) {
+            EMU_PASS("__TEST_JMP_ABS");
+        } else {
+            EMU_FAIL("__TEST_JMP_ABS");
+            fail += 1;
+        }
+    }
+
+    void __TEST_JMP_IND  (u32& fail, _6502& CPU, memory& mem); // Currently unsupported
 }

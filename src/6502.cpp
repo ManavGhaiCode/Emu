@@ -1,8 +1,6 @@
 #include "6502.h"
 #include "log.h"
 
-#include <unordered_map>
-
 #define MI_P_NOP() EMU_DEBUG("Running MI: NOP")
 #define MI_P_END() EMU_DEBUG("Running MI: END")
 
