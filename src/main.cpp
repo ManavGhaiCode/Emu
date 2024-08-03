@@ -71,6 +71,14 @@ int main( void ) {
     emu::__TEST_STY_ABS  (Fail, CPU, Mem);
 
     std::cout << std::endl;
+    EMU_DEBUG("Testing T**:");
+
+    emu::__TEST_TAX  (Fail, CPU, Mem);
+    emu::__TEST_TAY  (Fail, CPU, Mem);
+    emu::__TEST_TXA  (Fail, CPU, Mem);
+    emu::__TEST_TYA  (Fail, CPU, Mem);
+
+    std::cout << std::endl;
 
     if (!Fail) {
         EMU_INFO("All Tests Passing");

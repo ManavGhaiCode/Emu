@@ -711,12 +711,85 @@ namespace emu {
         }
     }
 
-    void __TEST_TAX      (u32& fail, _6502& CPU, memory& mem);
-    void __TEST_TAY      (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_TAX      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        CPU.A = 0x10;
+        mem[0x0000] = _6502::I_TAX;
+
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.X == CPU.A);
+
+        if (pass) {
+            EMU_PASS("__TEST_TAX");
+        } else {
+            EMU_FAIL("__TEST_TAX");
+            fail += 1;
+        }
+    }
+
+    void __TEST_TAY      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        CPU.A = 0x10;
+        mem[0x0000] = _6502::I_TAY;
+
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.Y == CPU.A);
+
+        if (pass) {
+            EMU_PASS("__TEST_TAY");
+        } else {
+            EMU_FAIL("__TEST_TAY");
+            fail += 1;
+        }
+    }
+
     void __TEST_TSX      (u32& fail, _6502& CPU, memory& mem); // Currently unsupported
-    void __TEST_TXA      (u32& fail, _6502& CPU, memory& mem);
+
+    void __TEST_TXA      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        CPU.X = 0x10;
+        mem[0x0000] = _6502::I_TXA;
+
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.A == CPU.X);
+
+        if (pass) {
+            EMU_PASS("__TEST_TXA");
+        } else {
+            EMU_FAIL("__TEST_TXA");
+            fail += 1;
+        }
+    }
+
     void __TEST_TXS      (u32& fail, _6502& CPU, memory& mem); // Currently unsupported
-    void __TEST_TYA      (u32& fail, _6502& CPU, memory& mem);
+
+    void __TEST_TYA      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        CPU.Y = 0x10;
+        mem[0x0000] = _6502::I_TYA;
+
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.A == CPU.Y);
+
+        if (pass) {
+            EMU_PASS("__TEST_TYA");
+        } else {
+            EMU_FAIL("__TEST_TYA");
+            fail += 1;
+        }
+    }
 
     void __TEST_JMP_ABS  (u32& fail, _6502& CPU, memory& mem);
     void __TEST_JMP_IND  (u32& fail, _6502& CPU, memory& mem);
