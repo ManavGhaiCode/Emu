@@ -31,6 +31,7 @@ namespace emu {
         "MI_WRITEB",
 
         "MI_CACHE_DNI",
+        "MI_CACHE_INC",
         "MI_CAHSE_DNIW_G2",
 
         "MI_END"
@@ -170,6 +171,19 @@ namespace emu {
 
                 I_JMP_ABS = 0x4C,
                 I_JMP_IND = 0x6C,
+
+                /*
+                    addressing    assembler     opc    bytes   cycles
+                    zeropage      DEC oper      C6       2       5  
+                    zeropage,X    DEC oper,X    D6       2       6  
+                    absolute      DEC oper      CE       3       6  
+                    absolute,X    DEC oper,X    DE       3       7  
+                */
+
+                I_DEC_ZP   = 0xC6,
+                I_DEC_ZPX  = 0xD6,
+                I_DEC_ABS  = 0xCE,
+                I_DEC_ABSX = 0xDE
             } Inst;
 
             void GetState();
@@ -207,6 +221,7 @@ namespace emu {
                 MI_WRITEB,
 
                 MI_CACHE_DNI,
+                MI_CACHE_INC,
                 MI_CAHSE_DNIW_G2,
 
                 MI_END

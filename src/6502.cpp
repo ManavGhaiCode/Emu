@@ -343,6 +343,42 @@ namespace emu {
                 WRITE_MI(MI_WRITE_PC);
             } break;
 
+            case I_DEC_ZP: {
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_READ_BYTEB);
+                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_NOP);
+                WRITE_MI(MI_WRITE);
+            } break;
+
+            case I_DEC_ZPX: {
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_ADD_CX);
+                WRITE_MI(MI_READ_BYTEB);
+                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_NOP);
+                WRITE_MI(MI_WRITE);
+            } break;
+
+            case I_DEC_ABS: {
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_NOP);
+                WRITE_MI(MI_WRITE);
+            } break;
+
+            case I_DEC_ABSX: {
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_ADD_CXW);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_NOP);
+                WRITE_MI(MI_WRITE);
+            } break;
+
             default: ASSERT(false && "Unreachable");
         }
     }
@@ -425,7 +461,7 @@ namespace emu {
                 if (add > 0xFF) {
                     m_Cache[m_CachePtr - 1] += (add - 0xFF) >> 8;
                 }
-                
+
                 m_Cache[m_CachePtr - 2] += Y;
             } break;
 
@@ -480,6 +516,10 @@ namespace emu {
             case MI_CACHE_DNI: {
                 m_Cache[m_CachePtr] = m_Cache[m_CachePtr - 1] + 1;
                 m_CachePtr += 1;
+            } break;
+
+            case MI_CACHE_INC: {
+                m_Cache[m_CachePtr - 1] += 1;
             } break;
 
             case MI_CAHSE_DNIW_G2: {
