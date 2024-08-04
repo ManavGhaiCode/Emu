@@ -23,6 +23,8 @@ namespace emu {
         "MI_READ_A",
         "MI_READ_X",
         "MI_READ_Y",
+        "MI_DEC_X",
+        "MI_DEC_Y",
 
         "MI_WRITE_PC",
         "MI_READ_PC",
@@ -183,7 +185,16 @@ namespace emu {
                 I_DEC_ZP   = 0xC6,
                 I_DEC_ZPX  = 0xD6,
                 I_DEC_ABS  = 0xCE,
-                I_DEC_ABSX = 0xDE
+                I_DEC_ABSX = 0xDE,
+
+                /*
+                    addressing    assembler     opc    bytes    cycles
+                    implied       DEX           CA       1        2  
+                    implied       DEY           88       1        2  
+                */
+
+                I_DEX = 0xCA,
+                I_DEY = 0x88,
             } Inst;
 
             void GetState();
@@ -213,6 +224,8 @@ namespace emu {
                 MI_READ_A,
                 MI_READ_X,
                 MI_READ_Y,
+                MI_DEC_X,
+                MI_DEC_Y,
 
                 MI_WRITE_PC,
                 MI_READ_PC,

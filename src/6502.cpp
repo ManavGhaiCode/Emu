@@ -379,6 +379,16 @@ namespace emu {
                 WRITE_MI(MI_WRITE);
             } break;
 
+            case I_DEX: {
+                WRITE_MI(MI_DEC_X);
+                WRITE_MI(MI_NOP);
+            } break;
+
+            case I_DEY: {
+                WRITE_MI(MI_DEC_Y);
+                WRITE_MI(MI_NOP);
+            } break;
+
             default: ASSERT(false && "Unreachable");
         }
     }
