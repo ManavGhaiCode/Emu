@@ -115,7 +115,7 @@ namespace emu {
             case I_LDA_INDY: {
                 // TODO: Implement
                 ASSERT_MSG(false, "Implement");
-
+                
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_BYTE);
                 WRITE_MI(MI_CACHE_DNI);
@@ -346,25 +346,25 @@ namespace emu {
             case I_DEC_ZP: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_BYTEB);
-                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_CACHE_DEC);
                 WRITE_MI(MI_NOP);
-                WRITE_MI(MI_WRITE);
+                WRITE_MI(MI_WRITEB);
             } break;
 
             case I_DEC_ZPX: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_ADD_CX);
                 WRITE_MI(MI_READ_BYTEB);
-                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_CACHE_DEC);
                 WRITE_MI(MI_NOP);
-                WRITE_MI(MI_WRITE);
+                WRITE_MI(MI_WRITEB);
             } break;
 
             case I_DEC_ABS: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_BYTE);
-                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_CACHE_DEC);
                 WRITE_MI(MI_NOP);
                 WRITE_MI(MI_WRITE);
             } break;
@@ -374,7 +374,7 @@ namespace emu {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_ADD_CXW);
                 WRITE_MI(MI_READ_BYTE);
-                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_CACHE_DEC);
                 WRITE_MI(MI_NOP);
                 WRITE_MI(MI_WRITE);
             } break;
@@ -386,6 +386,52 @@ namespace emu {
 
             case I_DEY: {
                 WRITE_MI(MI_DEC_Y);
+                WRITE_MI(MI_NOP);
+            } break;
+
+            case I_INC_ZP: {
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_READ_BYTEB);
+                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_NOP);
+                WRITE_MI(MI_WRITEB);
+            } break;
+            
+            case I_INC_ZPX: {
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_ADD_CX);
+                WRITE_MI(MI_READ_BYTEB);
+                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_NOP);
+                WRITE_MI(MI_WRITEB);
+            } break;
+
+            case I_INC_ABS: {
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_NOP);
+                WRITE_MI(MI_WRITE);
+            } break;
+
+            case I_INC_ABSX: {
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_FETCH_BYTE);
+                WRITE_MI(MI_ADD_CXW);
+                WRITE_MI(MI_READ_BYTE);
+                WRITE_MI(MI_CACHE_INC);
+                WRITE_MI(MI_NOP);
+                WRITE_MI(MI_WRITE);
+            } break;
+
+            case I_INX: {
+                WRITE_MI(MI_INC_X);
+                WRITE_MI(MI_NOP);
+            } break;
+
+            case I_INY: {
+                WRITE_MI(MI_INC_Y);
                 WRITE_MI(MI_NOP);
             } break;
 
@@ -505,6 +551,22 @@ namespace emu {
                 m_CachePtr += 1;
             } break;
 
+            case MI_DEC_X: {
+                X -= 1;
+            } break;
+
+            case MI_DEC_Y: {
+                Y -= 1;
+            } break;
+
+            case MI_INC_X: {
+                X += 1;
+            } break;
+
+            case MI_INC_Y: {
+                Y += 1;
+            } break;
+
             case MI_WRITE_PC: {
                 PC = (m_Cache[m_CachePtr - 1] << 8) | (m_Cache[m_CachePtr - 2]);
             } break;
@@ -530,6 +592,10 @@ namespace emu {
 
             case MI_CACHE_INC: {
                 m_Cache[m_CachePtr - 1] += 1;
+            } break;
+
+            case MI_CACHE_DEC: {
+                m_Cache[m_CachePtr - 1] -= 1;
             } break;
 
             case MI_CAHSE_DNIW_G2: {

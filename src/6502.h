@@ -25,6 +25,8 @@ namespace emu {
         "MI_READ_Y",
         "MI_DEC_X",
         "MI_DEC_Y",
+        "MI_INC_X",
+        "MI_INC_Y",
 
         "MI_WRITE_PC",
         "MI_READ_PC",
@@ -33,6 +35,7 @@ namespace emu {
         "MI_WRITEB",
 
         "MI_CACHE_DNI",
+        "MI_CACHE_DEC",
         "MI_CACHE_INC",
         "MI_CAHSE_DNIW_G2",
 
@@ -195,6 +198,28 @@ namespace emu {
 
                 I_DEX = 0xCA,
                 I_DEY = 0x88,
+
+                /*
+                    addressing    assembler     opc    bytes    cycles
+                    zeropage      INC oper      E6       2        5  
+                    zeropage,X    INC oper,X    F6       2        6  
+                    absolute      INC oper      EE       3        6  
+                    absolute,X    INC oper,X    FE       3        7  
+                */
+
+                I_INC_ZP   = 0xE6,
+                I_INC_ZPX  = 0xF6,
+                I_INC_ABS  = 0xEE,
+                I_INC_ABSX = 0xFE,
+
+                /*
+                    addressing    assembler     opc    bytes    cycles
+                    implied       INX           E8       1        2  
+                    implied       INY           C8       1        2 
+                */
+
+                I_INX = 0xE8,
+                I_INY = 0xC8
             } Inst;
 
             void GetState();
@@ -226,6 +251,8 @@ namespace emu {
                 MI_READ_Y,
                 MI_DEC_X,
                 MI_DEC_Y,
+                MI_INC_X,
+                MI_INC_Y,
 
                 MI_WRITE_PC,
                 MI_READ_PC,
@@ -234,6 +261,7 @@ namespace emu {
                 MI_WRITEB,
 
                 MI_CACHE_DNI,
+                MI_CACHE_DEC,
                 MI_CACHE_INC,
                 MI_CAHSE_DNIW_G2,
 
