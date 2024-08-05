@@ -45,6 +45,8 @@ namespace emu {
     void _6502::WriteByte(Word addr, Byte value) {
         (*m_Mem)[addr] = value;
         m_WritenMemory = value;
+
+        EMU_DEBUG("Writing: {} to addr: {}", (u32)value, addr);
     }
 
     void _6502::ReadNextI() {
@@ -471,7 +473,7 @@ namespace emu {
 
         RunMI(MicInst);
 
-        // EMU_DEBUG("Running MI: {}", emu::MI_Names[MicInst]);
+        EMU_DEBUG("Running MI: {}", emu::MI_Names[MicInst]);
     }
 
     void _6502::RunMI(MicroInst MicInst) {
@@ -487,10 +489,10 @@ namespace emu {
             } break;
 
             case MI_READ_BYTE: {
-                m_Cache[m_CachePtr - 2] = 
+                m_Cache[m_CachePtr] = 
                     ReadByte((m_Cache[m_CachePtr - 1] << 8) | (m_Cache[m_CachePtr - 2]));
 
-                m_CachePtr -= 1;
+                m_CachePtr += 1;
             } break;
 
             case MI_ADD_CX: {

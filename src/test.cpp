@@ -29,7 +29,6 @@ namespace emu {
         mem[0x0001] = 0x0F;
         mem[0x000F] = 0x20;
 
-
         CPU.Clock();
         CPU.Clock();
         CPU.Clock();
@@ -840,11 +839,11 @@ namespace emu {
     void __TEST_DEC_ZPX  (u32& fail, _6502& CPU, memory& mem) {
         CPU.Reset();
 
-        CPU.A = 0xA0;
-        
+        CPU.X = 0x10;
+
         mem[0x0000] = _6502::I_DEC_ZPX;
-        mem[0x0001] = 0x30;
-        mem[0x00D0] = 0x41;
+        mem[0x0001] = 0x20;
+        mem[0x0030] = 0x41;
 
         CPU.Clock();
         CPU.Clock();
@@ -852,8 +851,8 @@ namespace emu {
         CPU.Clock();
         CPU.Clock();
         CPU.Clock();
-
-        bool pass = (mem[0x00D0] == 0x40);
+        
+        bool pass = (mem[0x0030] == 0x40);
 
         if (pass) {
             EMU_PASS("__TEST_DEC_ZPX");
@@ -896,7 +895,7 @@ namespace emu {
         mem[0x0000] = _6502::I_DEC_ABSX;
         mem[0x0001] = 0x30;
         mem[0x0002] = 0x41;
-        mem[0x4130] = 0xA2;
+        mem[0x414A] = 0xA2;
 
         CPU.Clock();
         CPU.Clock();
@@ -957,7 +956,7 @@ namespace emu {
     void __TEST_INC_ZP   (u32& fail, _6502& CPU, memory& mem) {
         CPU.Reset();
 
-        mem[0x0000] = _6502::I_DEC_ZP;
+        mem[0x0000] = _6502::I_INC_ZP;
         mem[0x0001] = 0x30;
         mem[0x0030] = 0x41;
 
@@ -970,9 +969,9 @@ namespace emu {
         bool pass = (mem[0x0030] == 0x42);
 
         if (pass) {
-            EMU_PASS("__TEST_DEC_ZP");
+            EMU_PASS("__TEST_INC_ZP");
         } else {
-            EMU_FAIL("__TEST_DEC_ZP");
+            EMU_FAIL("__TEST_INC_ZP");
             fail += 1;
         }
     }
@@ -980,7 +979,7 @@ namespace emu {
     void __TEST_INC_ZPX  (u32& fail, _6502& CPU, memory& mem) {
         CPU.Reset();
 
-        CPU.A = 0xA0;
+        CPU.X = 0xA0;
         
         mem[0x0000] = _6502::I_INC_ZPX;
         mem[0x0001] = 0x30;
@@ -1036,8 +1035,8 @@ namespace emu {
         mem[0x0000] = _6502::I_INC_ABSX;
         mem[0x0001] = 0x30;
         mem[0x0002] = 0x41;
-        mem[0x4130] = 0xA2;
-
+        mem[0x414A] = 0xA1;
+        
         CPU.Clock();
         CPU.Clock();
         CPU.Clock();
@@ -1046,7 +1045,7 @@ namespace emu {
         CPU.Clock();
         CPU.Clock();
 
-        bool pass = (mem[0x414A] == 0xA3);
+        bool pass = (mem[0x414A] == 0xA2);
 
         if (pass) {
            EMU_PASS("__TEST_INC_ABSX");
@@ -1065,7 +1064,7 @@ namespace emu {
         CPU.Clock();
         CPU.Clock();
 
-        bool pass = (CPU.X == 0x23);
+        bool pass = (CPU.X == 0x22);
 
         if (pass) {
             EMU_PASS("__TEST_INX");
@@ -1084,7 +1083,7 @@ namespace emu {
         CPU.Clock();
         CPU.Clock();
 
-        bool pass = (CPU.Y == 0x23);
+        bool pass = (CPU.Y == 0x22);
 
         if (pass) {
             EMU_PASS("__TEST_INY");
