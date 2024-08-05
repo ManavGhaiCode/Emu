@@ -51,6 +51,20 @@ namespace emu {
 
     void __TEST_JMP_ABS  (u32& fail, _6502& CPU, memory& mem);
     void __TEST_JMP_IND  (u32& fail, _6502& CPU, memory& mem); // Currently unsupported
+  
+    void __TEST_DEC_ZP   (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_DEC_ZPX  (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_DEC_ABS  (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_DEC_ABSX (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_DEX      (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_DEY      (u32& fail, _6502& CPU, memory& mem);
+ 
+    void __TEST_INC_ZP   (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_INC_ZPX  (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_INC_ABS  (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_INC_ABSX (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_INX      (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_INY      (u32& fail, _6502& CPU, memory& mem);
 }
 
 #endif // _TEST_H_

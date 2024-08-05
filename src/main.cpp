@@ -85,7 +85,35 @@ int main( void ) {
     // emu::__TEST_JMP_IND  (Fail, CPU, Mem);
 
     std::cout << std::endl;
+    EMU_DEBUG("Testing DEC");
 
+    emu::__TEST_DEC_ZP   (Fail, CPU, Mem);
+    emu::__TEST_DEC_ZPX  (Fail, CPU, Mem);
+    emu::__TEST_DEC_ABS  (Fail, CPU, Mem);
+    emu::__TEST_DEC_ABSX (Fail, CPU, Mem);
+    
+    std::cout << std::endl;
+    EMU_DEBUG("Testing DEX/DEY");
+
+    emu::__TEST_DEX      (Fail, CPU, Mem);
+    emu::__TEST_DEY      (Fail, CPU, Mem);
+
+    std::cout << std::endl;
+    EMU_DEBUG("Testing INC");
+
+    emu::__TEST_INC_ZP   (Fail, CPU, Mem);
+    emu::__TEST_INC_ZPX  (Fail, CPU, Mem);
+    emu::__TEST_INC_ABS  (Fail, CPU, Mem);
+    emu::__TEST_INC_ABSX (Fail, CPU, Mem);
+    
+    std::cout << std::endl;
+    EMU_DEBUG("Testing INX/INY");
+
+    emu::__TEST_INX      (Fail, CPU, Mem);
+    emu::__TEST_INY      (Fail, CPU, Mem);
+
+    std::cout << std::endl;
+    
     if (!Fail) {
         EMU_INFO("All Tests Passing");
     } else {

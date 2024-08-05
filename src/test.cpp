@@ -813,4 +813,284 @@ namespace emu {
     }
 
     void __TEST_JMP_IND  (u32& fail, _6502& CPU, memory& mem); // Currently unsupported
+
+    void __TEST_DEC_ZP   (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        mem[0x0000] = _6502::I_DEC_ZP;
+        mem[0x0001] = 0x30;
+        mem[0x0030] = 0x41;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x0030] == 0x40);
+
+        if (pass) {
+            EMU_PASS("__TEST_DEC_ZP");
+        } else {
+            EMU_FAIL("__TEST_DEC_ZP");
+            fail += 1;
+        }
+    }
+
+    void __TEST_DEC_ZPX  (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        CPU.A = 0xA0;
+        
+        mem[0x0000] = _6502::I_DEC_ZPX;
+        mem[0x0001] = 0x30;
+        mem[0x00D0] = 0x41;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x00D0] == 0x40);
+
+        if (pass) {
+            EMU_PASS("__TEST_DEC_ZPX");
+        } else {
+            EMU_FAIL("__TEST_DEC_ZPX");
+            fail += 1;
+        }
+    }
+
+    void __TEST_DEC_ABS  (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        
+        mem[0x0000] = _6502::I_DEC_ABS;
+        mem[0x0001] = 0x30;
+        mem[0x0002] = 0x41;
+        mem[0x4130] = 0xA2;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x4130] == 0xA1);
+
+        if (pass) {
+           EMU_PASS("__TEST_DEC_ABS");
+        } else {
+            EMU_FAIL("__TEST_DEC_ABS");
+            fail += 1;
+        }
+    }
+
+    void __TEST_DEC_ABSX (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        CPU.X = 0x1A;
+        
+        mem[0x0000] = _6502::I_DEC_ABSX;
+        mem[0x0001] = 0x30;
+        mem[0x0002] = 0x41;
+        mem[0x4130] = 0xA2;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x414A] == 0xA1);
+
+        if (pass) {
+           EMU_PASS("__TEST_DEC_ABSX");
+        } else {
+            EMU_FAIL("__TEST_DEC_ABSX");
+            fail += 1;
+        }
+    }
+
+    void __TEST_DEX      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        CPU.X = 0x21;
+
+        mem[0x0000] = _6502::I_DEX;
+
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.X == 0x20);
+
+        if (pass) {
+            EMU_PASS("__TEST_DEX");
+        } else {
+            EMU_FAIL("__TEST_DEX");
+            fail += 1;
+        }
+    }
+
+    void __TEST_DEY      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        CPU.Y = 0x21;
+
+        mem[0x0000] = _6502::I_DEY;
+
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.Y == 0x20);
+
+        if (pass) {
+            EMU_PASS("__TEST_DEY");
+        } else {
+            EMU_FAIL("__TEST_DEY");
+            fail += 1;
+        }
+    }
+
+    void __TEST_INC_ZP   (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        mem[0x0000] = _6502::I_DEC_ZP;
+        mem[0x0001] = 0x30;
+        mem[0x0030] = 0x41;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x0030] == 0x42);
+
+        if (pass) {
+            EMU_PASS("__TEST_DEC_ZP");
+        } else {
+            EMU_FAIL("__TEST_DEC_ZP");
+            fail += 1;
+        }
+    }
+
+    void __TEST_INC_ZPX  (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        CPU.A = 0xA0;
+        
+        mem[0x0000] = _6502::I_INC_ZPX;
+        mem[0x0001] = 0x30;
+        mem[0x00D0] = 0x41;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x00D0] == 0x42);
+
+        if (pass) {
+            EMU_PASS("__TEST_INC_ZPX");
+        } else {
+            EMU_FAIL("__TEST_INC_ZPX");
+            fail += 1;
+        }
+    }
+
+    void __TEST_INC_ABS  (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        
+        mem[0x0000] = _6502::I_INC_ABS;
+        mem[0x0001] = 0x30;
+        mem[0x0002] = 0x41;
+        mem[0x4130] = 0xA2;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x4130] == 0xA3);
+
+        if (pass) {
+           EMU_PASS("__TEST_INC_ABS");
+        } else {
+            EMU_FAIL("__TEST_INC_ABS");
+            fail += 1;
+        }
+    }
+
+    void __TEST_INC_ABSX (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+
+        CPU.X = 0x1A;
+        
+        mem[0x0000] = _6502::I_INC_ABSX;
+        mem[0x0001] = 0x30;
+        mem[0x0002] = 0x41;
+        mem[0x4130] = 0xA2;
+
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x414A] == 0xA3);
+
+        if (pass) {
+           EMU_PASS("__TEST_INC_ABSX");
+        } else {
+            EMU_FAIL("__TEST_INC_ABSX");
+            fail += 1;
+        }
+    }
+
+    void __TEST_INX      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        CPU.X = 0x21;
+
+        mem[0x0000] = _6502::I_INX;
+
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.X == 0x23);
+
+        if (pass) {
+            EMU_PASS("__TEST_INX");
+        } else {
+            EMU_FAIL("__TEST_INX");
+            fail += 1;
+        }
+    }
+
+    void __TEST_INY      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        CPU.Y = 0x21;
+
+        mem[0x0000] = _6502::I_INY;
+
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.Y == 0x23);
+
+        if (pass) {
+            EMU_PASS("__TEST_INY");
+        } else {
+            EMU_FAIL("__TEST_INY");
+            fail += 1;
+        }
+    }
 }
