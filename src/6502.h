@@ -220,6 +220,19 @@ namespace emu {
 
                 I_INX = 0xE8,
                 I_INY = 0xC8
+
+                /*
+                    addressing    assembler     opc    bytes    cycles
+                    implied       PHA           48       1        3  
+                    implied       PHP           08       1        3  
+                    implied       PLA           68       1        4
+                    implied       PLP           28       1        4
+                */
+
+                I_PHA = 0x,
+                I_PHP = 0x,
+                I_PLA = 0x,
+                I_PLP = 0x,
             } Inst;
 
             void GetState();
@@ -291,7 +304,7 @@ namespace emu {
 
             Byte m_Status;
 
-            Byte SP;
+            Word SP;
 
             Byte m_WritenMemory;
 

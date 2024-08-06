@@ -25,7 +25,7 @@ namespace emu {
         m_Status = 0x0;
 
         PC = 0x0;
-        SP = 0x0;
+        SP = 0x201;
 
         m_Next = true;
     }
@@ -437,6 +437,26 @@ namespace emu {
                 WRITE_MI(MI_NOP);
             } break;
 
+            case I_PHA: {
+                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_PUSH_STACK);
+            } break;
+
+            case I_PHP: {
+                WRITE_MI(MI_READ_STATUS);
+                WRITE_MI(MI_PUSH_STACK);
+            } break;
+
+            case I_PLA: {
+                WRITE_MI(MI_PULL_STACK);
+                WRITE_MI(MI_WRITE_A);
+            } break;
+
+            case I_PLP: {
+                WRITE_MI(MI_PULL_STACK);
+                WRITE_MI(MI_WRITE_STATUS);
+            } break;
+                
             default: ASSERT(false && "Unreachable");
         }
     }
@@ -553,6 +573,26 @@ namespace emu {
                 m_CachePtr += 1;
             } break;
 
+            case MI_PULL_STACK: {
+                m_Cache[m_CachePtr] = m_Stack[m_StackPtr];
+                m_CachePtr += 1;
+                m_StackPtr += 1;
+
+                if (m_StackPtr == 0x201) {
+                    m_StackPtr = 0x100;
+                }
+            } break;
+
+            case MI_PUSH_STACK: {
+                m_Stack[m_StackPtr - 1] = m_Cache[m_CachePtr - 1];
+                m_CachePtr -= 1;
+                m_StackPtr -= 1;
+
+                if (m_StackPtr == 0x99) {
+                    m_StackPtr = 0x201;
+                }
+            } break;
+                
             case MI_DEC_X: {
                 X -= 1;
             } break;
