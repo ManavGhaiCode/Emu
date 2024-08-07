@@ -574,22 +574,22 @@ namespace emu {
             } break;
 
             case MI_PULL_STACK: {
-                m_Cache[m_CachePtr] = m_Stack[m_StackPtr];
+                m_Cache[m_CachePtr] = ReadByte(SP);
                 m_CachePtr += 1;
-                m_StackPtr += 1;
+                SP += 1;
 
-                if (m_StackPtr == 0x201) {
-                    m_StackPtr = 0x100;
+                if (SP == 0x201) {
+                    SP = 0x100;
                 }
             } break;
 
             case MI_PUSH_STACK: {
-                m_Stack[m_StackPtr - 1] = m_Cache[m_CachePtr - 1];
+                WriteByte(SP - 1, m_Cache[m_CachePtr - 1]);
                 m_CachePtr -= 1;
-                m_StackPtr -= 1;
+                SP -= 1;
 
-                if (m_StackPtr == 0x99) {
-                    m_StackPtr = 0x201;
+                if (SP == 0x99) {
+                    SP = 0x201;
                 }
             } break;
                 

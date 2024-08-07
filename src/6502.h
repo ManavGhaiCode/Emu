@@ -28,6 +28,12 @@ namespace emu {
         "MI_INC_X",
         "MI_INC_Y",
 
+        "MI_WRITE_STATUS",
+        "MI_READ_STATUS",
+
+        "MI_PUSH_STACK",
+        "MI_PULL_STACK",
+
         "MI_WRITE_PC",
         "MI_READ_PC",
 
@@ -94,7 +100,7 @@ namespace emu {
                 I_LDX_ZPY  = 0xB6,
                 I_LDX_ABS  = 0xAE,
                 I_LDX_ABSY = 0xBE,
-
+                
                 /*
                     addressing    assembler     opc   bytes   cycles
                     immediate     LDY #oper     A0      2       2  
@@ -219,7 +225,7 @@ namespace emu {
                 */
 
                 I_INX = 0xE8,
-                I_INY = 0xC8
+                I_INY = 0xC8,
 
                 /*
                     addressing    assembler     opc    bytes    cycles
@@ -229,10 +235,10 @@ namespace emu {
                     implied       PLP           28       1        4
                 */
 
-                I_PHA = 0x,
-                I_PHP = 0x,
-                I_PLA = 0x,
-                I_PLP = 0x,
+                I_PHA = 0x48,
+                I_PHP = 0x08,
+                I_PLA = 0x68,
+                I_PLP = 0x28,
             } Inst;
 
             void GetState();
@@ -266,6 +272,12 @@ namespace emu {
                 MI_DEC_Y,
                 MI_INC_X,
                 MI_INC_Y,
+
+                MI_WRITE_STATUS,
+                MI_READ_STATUS,
+                
+                MI_PUSH_STACK,
+                MI_PULL_STACK,
 
                 MI_WRITE_PC,
                 MI_READ_PC,
