@@ -6,6 +6,49 @@
 
 #define WRITE_MI(MI) m_Inst[m_InstPtr] = MI; m_InstPtr += 1
 
+static const char* MI_Names[] = {
+    "MI_NOP",
+    
+    "MI_FETCH_BYTE",
+    "MI_READ_BYTEB",
+    "MI_READ_BYTE",
+    
+    "MI_ADD_CX",
+    "MI_ADD_CY",
+    "MI_ADD_CXW",
+    "MI_ADD_CYW",
+    
+    "MI_WRITE_A",
+    "MI_WRITE_Y",
+    "MI_WRITE_X",
+    "MI_READ_A",
+    "MI_READ_X",
+    "MI_READ_Y",
+    "MI_DEC_X",
+    "MI_DEC_Y",
+    "MI_INC_X",
+    "MI_INC_Y",
+    
+    "MI_WRITE_STATUS",
+    "MI_READ_STATUS",
+    
+    "MI_PUSH_STACK",
+    "MI_PULL_STACK",
+    
+    "MI_WRITE_PC",
+    "MI_READ_PC",
+    
+    "MI_WRITE",
+    "MI_WRITEB",
+    
+    "MI_CACHE_DNI",
+    "MI_CACHE_DEC",
+    "MI_CACHE_INC",
+    "MI_CAHSE_DNIW_G2",
+    
+    "MI_END"
+};
+
 namespace emu {
     void _6502::GetState() {
         EMU_TRACE("GetState():\n\tA:  {}\n\tX:  {}\n\tY:  {}\n\tPC: {}\n\tSP: {}",
@@ -493,7 +536,7 @@ namespace emu {
 
         RunMI(MicInst);
 
-        EMU_DEBUG("Running MI: {}", emu::MI_Names[MicInst]);
+        EMU_DEBUG("Running MI: {}", MI_Names[MicInst]);
     }
 
     void _6502::RunMI(MicroInst MicInst) {
@@ -625,7 +668,7 @@ namespace emu {
                 WriteByte(addr, m_Cache[m_CachePtr - 1]);
 
                 m_CachePtr -= 3;
-            }
+            } break;
 
             case MI_CACHE_DNI: {
                 m_Cache[m_CachePtr] = m_Cache[m_CachePtr - 1] + 1;

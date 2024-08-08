@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 int main( void ) {
-    static const timespec SleepTime = {1, 0};
+    // static const timespec SleepTime = {1, 0};
 
     EMU_TRACE("Init Emulator (emu)");
 
