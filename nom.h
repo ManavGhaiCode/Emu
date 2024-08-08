@@ -26,10 +26,10 @@
 
 #define DA_APPEND(da, el) do {                                  \
     if((da)->cap < (da)->size + 1) {                            \
-        (da)->cap = (da)->cap ? (da)->cap * 2 : DA_INIT_SIZE;   \
+        (da)->cap = (da)->cap ? (da)->cap * 2 : DA_INIT_CAP;    \
         (da)->items = NOM_REALLOC((da)->items, (da)->cap);      \
     }                                                           \
-    (da)->itmes[(da)->size] = el;                               \
+    (da)->items[(da)->size] = el;                               \
     (da)->size += 1;                                            \
 } while (0)
 
@@ -63,7 +63,7 @@ typedef struct {
 
 #define Nom_CmdAppend(cmd, ...) __Nom_CmdAppend(cmd, __VA_ARGS__, NULL);
 
-void __Nom_CmdApped(Nom_Cmd* cmd, ...);
+void __Nom_CmdAppend(Nom_Cmd* cmd, ...);
 Pid  Nom_CmdRun_Async(Nom_Cmd cmd);
 bool Nom_CmdRun_Sync(Nom_Cmd cmd);
 
@@ -71,16 +71,23 @@ void Nom_FreeCmd(Nom_Cmd* cmd);
 void Nom_FreeStringBuilder(Nom_StringBuilder* sb);
 
 // ----------------------------------------
+// ----------------- FILE -----------------
+// ----------------------------------------
+
+// ----------------------------------------
 // ------------ IMPLEMENTATION ------------
 // ----------------------------------------
 
-#ifdef NOM_IMPLEMETATION
+#ifdef NOM_IMPLEMENTATION
 
 void __Nom_CmdAppend(Nom_Cmd* cmd, ...) {
     va_list list;
-    va_start(list);
-        const char* thing = va_arg(list, const char*);
-        DA_APPEND(cmd, thing);
+    va_start(list, cmd);
+        const char* el = va_arg(list, const char*);
+        while (el) {
+            DA_APPEND(cmd, el);
+            el = va_arg(list, const char*);
+        }
     va_end(list);
 }
 
