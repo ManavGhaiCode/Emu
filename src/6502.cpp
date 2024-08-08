@@ -615,6 +615,22 @@ namespace emu {
                 m_Cache[m_CachePtr] = Y;
                 m_CachePtr += 1;
             } break;
+                
+            case MI_DEC_X: {
+                X -= 1;
+            } break;
+
+            case MI_DEC_Y: {
+                Y -= 1;
+            } break;
+
+            case MI_INC_X: {
+                X += 1;
+            } break;
+
+            case MI_INC_Y: {
+                Y += 1;
+            } break;
 
             case MI_PULL_STACK: {
                 m_Cache[m_CachePtr] = ReadByte(SP);
@@ -635,23 +651,17 @@ namespace emu {
                     SP = 0x201;
                 }
             } break;
+
+            case MI_READ_STATUS: {
+                m_Cache[m_CachePtr] = m_Status;
+                m_CachePtr += 1;
+            } break;
+
+            case MI_WRITE_STATUS: {
+                m_Status = m_Cache[m_CachePtr - 1];
+                m_CachePtr -= 1;
+            } break;
                 
-            case MI_DEC_X: {
-                X -= 1;
-            } break;
-
-            case MI_DEC_Y: {
-                Y -= 1;
-            } break;
-
-            case MI_INC_X: {
-                X += 1;
-            } break;
-
-            case MI_INC_Y: {
-                Y += 1;
-            } break;
-
             case MI_WRITE_PC: {
                 PC = (m_Cache[m_CachePtr - 1] << 8) | (m_Cache[m_CachePtr - 2]);
             } break;

@@ -19,6 +19,14 @@ namespace emu {
                 m_Mem = mem;
             }
 
+            void SetStatus(Byte Status) {
+                m_Status = Status;
+            }
+
+            Byte GetStatus() {
+                return m_Status;
+            }
+        
             typedef enum {
                 /*
                     addressing    assembler     opc   bytes   cycles
@@ -205,6 +213,7 @@ namespace emu {
             Byte Y; 
 
             Word PC;
+            Word SP;
 
         private:
             typedef enum {
@@ -272,8 +281,6 @@ namespace emu {
             u8 m_InstPtr = 0;
 
             Byte m_Status;
-
-            Word SP;
 
             Byte m_WritenMemory;
 

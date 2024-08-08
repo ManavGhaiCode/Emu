@@ -1092,4 +1092,82 @@ namespace emu {
             fail += 1;
         }
     }
+
+    void __TEST_PHA      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        CPU.A = 0x10;
+
+        mem[0x0000] = _6502::I_PHA;
+
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x0200] == 0x10);
+
+        if (pass) {
+            EMU_PASS("TEST_PHA");
+        } else {
+            EMU_FAIL("TEST_PHA");
+            fail += 1;
+        }
+    }
+
+    void __TEST_PHP      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        CPU.SetStatus(0xF5);
+        
+        mem[0x0000] = _6502::I_PHP;
+
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (mem[0x0200] == 0xF5);
+
+        if (pass) {
+            EMU_PASS("TEST_PHP");
+        } else {
+            EMU_FAIL("TEST_PHP");
+            fail += 1;
+        }
+    }
+
+    void __TEST_PLA      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        CPU.SP -= 1;
+        
+        mem[0x0000] = _6502::I_PLA;
+        mem[0x0200] = 0xA0;
+        
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.A == 0xA0);
+
+        if (pass) {
+            EMU_PASS("TEST_PLA");
+        } else {
+            EMU_FAIL("TEST_PLA");
+            fail += 1;
+        }
+    }
+
+    void __TEST_PLP      (u32& fail, _6502& CPU, memory& mem) {
+        CPU.Reset();
+        CPU.SP -= 1;
+        
+        mem[0x0000] = _6502::I_PLP;
+        mem[0x0200] = 0xA0;
+        
+        CPU.Clock();
+        CPU.Clock();
+
+        bool pass = (CPU.GetStatus() == 0xA0);
+
+        if (pass) {
+            EMU_PASS("TEST_PLP");
+        } else {
+            EMU_FAIL("TEST_PLP");
+            fail += 1;
+        }
+    }
 }

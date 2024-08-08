@@ -65,6 +65,11 @@ namespace emu {
     void __TEST_INC_ABSX (u32& fail, _6502& CPU, memory& mem);
     void __TEST_INX      (u32& fail, _6502& CPU, memory& mem);
     void __TEST_INY      (u32& fail, _6502& CPU, memory& mem);
+
+    void __TEST_PHA      (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_PHP      (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_PLA      (u32& fail, _6502& CPU, memory& mem);
+    void __TEST_PLP      (u32& fail, _6502& CPU, memory& mem);
 }
 
 #endif // _TEST_H_

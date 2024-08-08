@@ -113,6 +113,14 @@ int main( void ) {
     emu::__TEST_INY      (Fail, CPU, Mem);
 
     std::cout << std::endl;
+    EMU_DEBUG("Testong PH* and PL*");
+
+    emu::__TEST_PHA      (Fail, CPU, Mem);
+    emu::__TEST_PHP      (Fail, CPU, Mem);
+    emu::__TEST_PLA      (Fail, CPU, Mem);
+    emu::__TEST_PLP      (Fail, CPU, Mem);
+
+    std::cout << std::endl;
     
     if (!Fail) {
         EMU_INFO("All Tests Passing");
