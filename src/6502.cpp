@@ -446,6 +446,8 @@ namespace emu {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_WRITE_PC);
+
+
             } break;
 
             case I_JMP_IND: {
@@ -458,6 +460,8 @@ namespace emu {
                 WRITE_MI(MI_CAHSE_DNIW_G2);
                 WRITE_MI(MI_READ_BYTE);
                 WRITE_MI(MI_WRITE_PC);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_DEC_ZP: {
@@ -466,6 +470,8 @@ namespace emu {
                 WRITE_MI(MI_CACHE_DEC);
                 WRITE_MI(MI_NOP);
                 WRITE_MI(MI_WRITEB);
+
+                m_StatusWriter = SI_MEM;
             } break;
 
             case I_DEC_ZPX: {
@@ -475,6 +481,8 @@ namespace emu {
                 WRITE_MI(MI_CACHE_DEC);
                 WRITE_MI(MI_NOP);
                 WRITE_MI(MI_WRITEB);
+
+                m_StatusWriter = SI_MEM;
             } break;
 
             case I_DEC_ABS: {
@@ -484,6 +492,8 @@ namespace emu {
                 WRITE_MI(MI_CACHE_DEC);
                 WRITE_MI(MI_NOP);
                 WRITE_MI(MI_WRITE);
+
+                m_StatusWriter = SI_MEM;
             } break;
 
             case I_DEC_ABSX: {
@@ -494,16 +504,22 @@ namespace emu {
                 WRITE_MI(MI_CACHE_DEC);
                 WRITE_MI(MI_NOP);
                 WRITE_MI(MI_WRITE);
+
+                m_StatusWriter = SI_MEM;
             } break;
 
             case I_DEX: {
                 WRITE_MI(MI_DEC_X);
                 WRITE_MI(MI_NOP);
+
+                m_StatusWriter = SI_X;
             } break;
 
             case I_DEY: {
                 WRITE_MI(MI_DEC_Y);
                 WRITE_MI(MI_NOP);
+
+                m_StatusWriter = SI_Y;
             } break;
 
             case I_INC_ZP: {
@@ -512,6 +528,8 @@ namespace emu {
                 WRITE_MI(MI_CACHE_INC);
                 WRITE_MI(MI_NOP);
                 WRITE_MI(MI_WRITEB);
+
+                m_StatusWriter = SI_MEM;
             } break;
             
             case I_INC_ZPX: {
@@ -521,6 +539,8 @@ namespace emu {
                 WRITE_MI(MI_CACHE_INC);
                 WRITE_MI(MI_NOP);
                 WRITE_MI(MI_WRITEB);
+
+                m_StatusWriter = SI_MEM;
             } break;
 
             case I_INC_ABS: {
@@ -530,6 +550,8 @@ namespace emu {
                 WRITE_MI(MI_CACHE_INC);
                 WRITE_MI(MI_NOP);
                 WRITE_MI(MI_WRITE);
+
+                m_StatusWriter = SI_MEM;
             } break;
 
             case I_INC_ABSX: {
@@ -540,36 +562,50 @@ namespace emu {
                 WRITE_MI(MI_CACHE_INC);
                 WRITE_MI(MI_NOP);
                 WRITE_MI(MI_WRITE);
+
+                m_StatusWriter = SI_MEM;
             } break;
 
             case I_INX: {
                 WRITE_MI(MI_INC_X);
                 WRITE_MI(MI_NOP);
+
+                m_StatusWriter = SI_X;
             } break;
 
             case I_INY: {
                 WRITE_MI(MI_INC_Y);
                 WRITE_MI(MI_NOP);
+
+                m_StatusWriter = SI_Y;
             } break;
 
             case I_PHA: {
                 WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_PUSH_STACK);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_PHP: {
                 WRITE_MI(MI_READ_STATUS);
                 WRITE_MI(MI_PUSH_STACK);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_PLA: {
                 WRITE_MI(MI_PULL_STACK);
                 WRITE_MI(MI_WRITE_A);
+
+                m_StatusWriter = SI_A;
             } break;
 
             case I_PLP: {
                 WRITE_MI(MI_PULL_STACK);
                 WRITE_MI(MI_WRITE_STATUS);
+                
+                m_StatusWriter = SI_NONE;
             } break;
                 
             default: ASSERT(false && "Unreachable");
@@ -794,7 +830,7 @@ namespace emu {
 
     void _6502::WriteStatus() {
         switch (m_StatusWriter) {
-            case SU_NONE: break;
+            case SI_NONE: break;
             case SI_A: {
                 WriteStatus(Z, A == 0);
                 WriteStatus(N, A > 0x7F);
