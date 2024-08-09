@@ -411,10 +411,7 @@ namespace emu {
             } break;
 
             case I_TSX: {
-                // TODO: Implement
-                ASSERT_MSG(false, "Implement");
-
-                WRITE_MI(MI_READ_A);
+                WRITE_MI(MI_PULL_STACK);
                 WRITE_MI(MI_WRITE_X);
 
                 m_StatusWriter = SI_X;
@@ -428,11 +425,10 @@ namespace emu {
             } break;
 
             case I_TXS: {
-                // TODO: Implement
-                ASSERT_MSG(false, "Implement");
+                WRITE_MI(MI_READ_X);
+                WRITE_MI(MI_PUSH_STACK);
 
-                WRITE_MI(MI_READ_A);
-                WRITE_MI(MI_WRITE_X);
+                m_StatusWriter = SI_MEM;
             } break;
 
             case I_TYA: {
@@ -446,8 +442,6 @@ namespace emu {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_WRITE_PC);
-
-
             } break;
 
             case I_JMP_IND: {
