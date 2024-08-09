@@ -267,6 +267,10 @@ namespace emu {
                 MI_CACHE_INC,
                 MI_CAHSE_DNIW_G2,
 
+                MI_SC1,
+                MI_SD1,
+                MI_SI1,
+
                 MI_END
             } MicroInst;
 

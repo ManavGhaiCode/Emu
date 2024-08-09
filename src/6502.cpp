@@ -45,6 +45,11 @@ static const char* MI_Names[] = {
     "MI_CACHE_DEC",
     "MI_CACHE_INC",
     "MI_CAHSE_DNIW_G2",
+
+    "MI_SC1",
+    "MI_SD1",
+    "MI_SI1",
+
     
     "MI_END"
 };
@@ -601,7 +606,22 @@ namespace emu {
                 
                 m_StatusWriter = SI_NONE;
             } break;
-                
+
+            case I_SEC: {
+                WRITE_MI(MI_SC1);
+                WRITE_MI(MI_WRITE_STATUS);
+            } break;
+
+            case I_SED: {
+                WRITE_MI(MI_SD1);
+                WRITE_MI(MI_WRITE_STATUS);
+            } break;
+
+            case I_SEI: {
+                WRITE_MI(MI_SI1);
+                WRITE_MI(MI_WRITE_STATUS);
+            } break;
+
             default: ASSERT(false && "Unreachable");
         }
     }
@@ -804,6 +824,18 @@ namespace emu {
                 if (m_Cache[m_CachePtr - 1] == 0) {
                     m_Cache[m_CachePtr] += 1;
                 }
+            } break;
+
+            case MI_SC1: {
+                WriteStatus(C, 1);
+            } break;
+
+            case MI_SD1: {
+                WriteStatus(D, 1);
+            } break;
+
+            case MI_SI1: {
+                WriteStatus(I, 1);
             } break;
 
             default: ASSERT(false && "Unreachable");
