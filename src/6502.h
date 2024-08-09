@@ -269,6 +269,8 @@ namespace emu {
             } StatusMask;
 
             typedef enum {
+                SI_NONE,
+                
                 SI_A,
                 SI_X,
                 SI_Y,

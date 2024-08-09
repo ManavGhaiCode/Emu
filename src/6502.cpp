@@ -100,12 +100,16 @@ namespace emu {
             case I_LDA_IM: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_WRITE_A);
+
+                m_StatusWriter = SI_A;
             } break;
 
             case I_LDA_ZP: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_BYTEB);
                 WRITE_MI(MI_WRITE_A);
+
+                m_StatusWriter = SI_A;
             } break;
 
             case I_LDA_ZPX: {
@@ -113,6 +117,8 @@ namespace emu {
                 WRITE_MI(MI_ADD_CX);
                 WRITE_MI(MI_READ_BYTEB);
                 WRITE_MI(MI_WRITE_A);
+
+                m_StatusWriter = SI_A;
             } break;
 
             case I_LDA_ABS: {
@@ -120,6 +126,8 @@ namespace emu {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_BYTE);
                 WRITE_MI(MI_WRITE_A);
+
+                m_StatusWriter = SI_A;
             } break;
 
             case I_LDA_ABSX: {
@@ -133,6 +141,8 @@ namespace emu {
                 if (lo + X > 0xFF) {
                     WRITE_MI(MI_NOP);
                 }
+
+                m_StatusWriter = SI_A;
             } break;
 
             case I_LDA_ABSY: {
@@ -146,6 +156,8 @@ namespace emu {
                 if (lo + Y > 0xFF) {
                     WRITE_MI(MI_NOP);
                 }
+
+                m_StatusWriter = SI_A;
             } break;
 
             case I_LDA_INDX: {
@@ -155,6 +167,8 @@ namespace emu {
                 WRITE_MI(MI_CACHE_DNI);
                 WRITE_MI(MI_READ_BYTE);
                 WRITE_MI(MI_WRITE_A);
+
+                m_StatusWriter = SI_A;
             } break;
 
             case I_LDA_INDY: {
@@ -172,17 +186,23 @@ namespace emu {
                 if (lo + Y > 0xFF) {
                     WRITE_MI(MI_NOP);
                 }
+
+                m_StatusWriter = SI_A;
             } break;
 
             case I_LDX_IM: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_WRITE_X);
+
+                m_StatusWriter = SI_X;
             } break;
 
             case I_LDX_ZP: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_BYTEB);
                 WRITE_MI(MI_WRITE_X);
+
+                m_StatusWriter = SI_X;
             } break;
 
             case I_LDX_ZPY: {
@@ -190,6 +210,8 @@ namespace emu {
                 WRITE_MI(MI_ADD_CY);
                 WRITE_MI(MI_READ_BYTEB);
                 WRITE_MI(MI_WRITE_X);
+
+                m_StatusWriter = SI_X;
             } break;
 
             case I_LDX_ABS: {
@@ -197,6 +219,8 @@ namespace emu {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_BYTE);
                 WRITE_MI(MI_WRITE_X);
+
+                m_StatusWriter = SI_X;
             } break;
 
             case I_LDX_ABSY: {
@@ -205,17 +229,23 @@ namespace emu {
                 WRITE_MI(MI_ADD_CYW);
                 WRITE_MI(MI_READ_BYTE);
                 WRITE_MI(MI_WRITE_X);
+
+                m_StatusWriter = SI_X;
             } break;
 
             case I_LDY_IM: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_WRITE_Y);
+
+                m_StatusWriter = SI_Y;
             } break;
 
             case I_LDY_ZP: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_BYTEB);
                 WRITE_MI(MI_WRITE_Y);
+
+                m_StatusWriter = SI_Y;
             } break;
 
             case I_LDY_ZPX: {
@@ -223,6 +253,8 @@ namespace emu {
                 WRITE_MI(MI_ADD_CX);
                 WRITE_MI(MI_READ_BYTEB);
                 WRITE_MI(MI_WRITE_Y);
+
+                m_StatusWriter = SI_Y;
             } break;
 
             case I_LDY_ABS: {
@@ -230,6 +262,8 @@ namespace emu {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_BYTE);
                 WRITE_MI(MI_WRITE_Y);
+
+                m_StatusWriter = SI_Y;
             } break;
 
             case I_LDY_ABSX: {
@@ -238,12 +272,16 @@ namespace emu {
                 WRITE_MI(MI_ADD_CXW);
                 WRITE_MI(MI_READ_BYTE);
                 WRITE_MI(MI_WRITE_Y);
+
+                m_StatusWriter = SI_Y;
             } break;
 
             case I_STA_ZP: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_WRITEB);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STA_ZPX: {
@@ -251,6 +289,8 @@ namespace emu {
                 WRITE_MI(MI_ADD_CX);
                 WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_WRITEB);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STA_ABS: {
@@ -258,6 +298,8 @@ namespace emu {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_WRITE);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STA_ABSX: {
@@ -266,6 +308,8 @@ namespace emu {
                 WRITE_MI(MI_ADD_CXW);
                 WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_WRITE);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STA_ABSY: {
@@ -274,6 +318,8 @@ namespace emu {
                 WRITE_MI(MI_ADD_CYW);
                 WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_WRITE);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STA_INDX: {
@@ -283,6 +329,8 @@ namespace emu {
                 WRITE_MI(MI_CACHE_DNI);
                 WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_WRITE);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STA_INDY: {
@@ -292,12 +340,16 @@ namespace emu {
                 WRITE_MI(MI_ADD_CYW);
                 WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_WRITE);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STX_ZP: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_X);
                 WRITE_MI(MI_WRITEB);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STX_ZPY: {
@@ -305,6 +357,8 @@ namespace emu {
                 WRITE_MI(MI_ADD_CY);
                 WRITE_MI(MI_READ_X);
                 WRITE_MI(MI_WRITEB);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STX_ABS: {
@@ -312,12 +366,16 @@ namespace emu {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_X);
                 WRITE_MI(MI_WRITE);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STY_ZP: {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_Y);
                 WRITE_MI(MI_WRITEB);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STY_ZPX: {
@@ -325,6 +383,8 @@ namespace emu {
                 WRITE_MI(MI_ADD_CX);
                 WRITE_MI(MI_READ_Y);
                 WRITE_MI(MI_WRITEB);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_STY_ABS: {
@@ -332,16 +392,22 @@ namespace emu {
                 WRITE_MI(MI_FETCH_BYTE);
                 WRITE_MI(MI_READ_Y);
                 WRITE_MI(MI_WRITE);
+
+                m_StatusWriter = SI_NONE;
             } break;
 
             case I_TAX: {
                 WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_WRITE_X);
+
+                m_StatusWriter = SI_X;
             } break;
 
             case I_TAY: {
                 WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_WRITE_Y);
+
+                m_StatusWriter = SI_Y;
             } break;
 
             case I_TSX: {
@@ -350,11 +416,15 @@ namespace emu {
 
                 WRITE_MI(MI_READ_A);
                 WRITE_MI(MI_WRITE_X);
+
+                m_StatusWriter = SI_X;
             } break;
 
             case I_TXA: {
                 WRITE_MI(MI_READ_X);
                 WRITE_MI(MI_WRITE_A);
+
+                m_StatusWriter = SI_A;
             } break;
 
             case I_TXS: {
@@ -368,6 +438,8 @@ namespace emu {
             case I_TYA: {
                 WRITE_MI(MI_READ_Y);
                 WRITE_MI(MI_WRITE_A);
+
+                m_StatusWriter = SI_A;
             } break;
 
             case I_JMP_ABS: {
@@ -722,25 +794,26 @@ namespace emu {
 
     void _6502::WriteStatus() {
         switch (m_StatusWriter) {
+            case SU_NONE: break;
             case SI_A: {
                 WriteStatus(Z, A == 0);
                 WriteStatus(N, A > 0x7F);
-            }  break;
+            } break;
 
             case SI_X: {
                 WriteStatus(Z, X == 0);
                 WriteStatus(N, X > 0x7F);
-            }  break;
+            } break;
 
             case SI_Y: {
                 WriteStatus(Z, Y == 0);
                 WriteStatus(N, Y > 0x7F);
-            }  break;
+            } break;
 
             case SI_MEM: {
                 WriteStatus(Z, m_WritenMemory == 0);
                 WriteStatus(N, m_WritenMemory > 0x7F);
-            }  break;
+            } break;
         }
     }
 }
